@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash Screen -->
+
+    <style name="iv_loco_SplashActivity">
+        <item name="android:layout_marginTop">100dp</item>
+        <item name="android:layout_marginStart">88dp</item>
+        <item name="android:layout_marginEnd">88dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:foregroundGravity">center_vertical</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="layout_constraintWidth_percent">0.7</item>
+    </style>
+
+    <style name="tv_title_SplashActivity">
+        <item name="android:layout_marginTop">60dp</item>
+        <item name="android:layout_marginStart">60dp</item>
+        <item name="android:layout_marginEnd">60dp</item>
+        <item name="android:fontFamily">@font/yeonsung</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">64sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="tv_description_SplashActivity">
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:fontFamily">@font/yeonsung</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">22sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+</resources>

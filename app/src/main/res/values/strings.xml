@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Food Delivery</string>
+    <string name="basket_bite">BasketBite</string>
+    <string name="deliever_favorite_food">Deliever Favorite Food</string>
 </resources>
