@@ -34,5 +34,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="tv_design">
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:fontFamily">@font/yeonsung</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
 
 </resources>
