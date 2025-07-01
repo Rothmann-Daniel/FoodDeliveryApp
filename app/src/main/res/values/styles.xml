@@ -2,7 +2,8 @@
 <resources>
     <!-- Splash Screen -->
 
-    <style name="iv_loco_SplashActivity">
+    <!-- logo -->
+    <style name="iv_logo_SplashActivity">
         <item name="android:layout_marginTop">100dp</item>
         <item name="android:layout_marginStart">88dp</item>
         <item name="android:layout_marginEnd">88dp</item>
@@ -13,7 +14,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="layout_constraintWidth_percent">0.7</item>
     </style>
-
+    <!-- title Splash Screen -->
     <style name="tv_title_SplashActivity">
         <item name="android:layout_marginTop">60dp</item>
         <item name="android:layout_marginStart">60dp</item>
@@ -25,6 +26,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <!-- description Splash Screen -->
     <style name="tv_description_SplashActivity">
         <item name="android:layout_marginTop">32dp</item>
         <item name="android:fontFamily">@font/yeonsung</item>
@@ -34,6 +36,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <!-- design Splash Screen -->
     <style name="tv_design">
         <item name="android:layout_marginBottom">16dp</item>
         <item name="android:layout_marginStart">8dp</item>
@@ -45,5 +48,29 @@
         <item name="android:textColor">@color/blue</item>
     </style>
 
+    <!-- Start Screen -->
+
+    <!-- title Start Screen -->
+    <style name="tv_title_StartActivity" parent="tv_title_SplashActivity">
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/red_startActivity</item>
+    </style>
+
+    <!-- button Next Start Screen -->
+    <style name="bt_next_StartActivity">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+        <item name="android:fontFamily">@font/yeonsung</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:backgroundTint">@color/btn_next_startActivity</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
 </resources>
