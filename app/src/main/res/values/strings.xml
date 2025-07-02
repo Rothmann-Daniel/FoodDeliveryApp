@@ -1,15 +1,39 @@
 <resources>
+    <!-- title and description -->
     <string name="app_name">BasketBite</string>
     <string name="basket_bite">BasketBite</string>
     <string name="delievery_favorite_food">Deliever Favorite Food</string>
     <string name="design">Design By Daniel Rothmann</string>
     <string name="title_StartActivity">Enjoy Restaurant Quality Meals at Home</string>
     <string name="join_moto">Login To Your Account</string>
+
+    <!-- hint and question -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Name</string>
     <string name="hint_surname">Surname</string>
     <string name="hint_email_or_number">Email or Phone Number</string>
     <string name="question_LUA">Don’t Have Account?</string>
+
+    <!-- Login/Password -->
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+
+    <!-- Sign In/Sign Up -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+
+
+    <!--Support /  Кнопка "Написать в поддержку"  -->
+    <string name="supportTitle">Support</string>
+    <string name="support">Contact Support</string>
+    <string name="support_email">danilarothmann@gmail.com</string> <!-- support email -->
+    <string name="support_email_subject">Message to BasketBite </string>
+    <string name="support_email_body">Hello BasketBite, \n </string>
+    <string name="no_email_app">No email app found on this device</string>
+    <string name="choose_email_app">Choose email app</string>
+    <string name="email_send_error">Failed to open email app</string>
 
 </resources>
