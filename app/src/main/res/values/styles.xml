@@ -28,7 +28,6 @@
 
     <!-- description Splash Screen -->
     <style name="tv_description_SplashActivity">
-        <item name="android:layout_marginTop">32dp</item>
         <item name="android:fontFamily">@font/yeonsung</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">22sp</item>

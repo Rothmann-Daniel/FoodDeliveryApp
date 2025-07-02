@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">BasketBite</string>
     <string name="basket_bite">BasketBite</string>
-    <string name="deliever_favorite_food">Deliever Favorite Food</string>
+    <string name="delievery_favorite_food">Deliever Favorite Food</string>
     <string name="design">Design By Daniel Rothmann</string>
     <string name="title_StartActivity">Enjoy Restaurant Quality Meals at Home</string>
+    <string name="join_moto">Login To Your Account</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_email_or_number">Email or Phone Number</string>
+
 </resources>
