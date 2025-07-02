@@ -13,7 +13,8 @@
     <string name="hint_name">Name</string>
     <string name="hint_surname">Surname</string>
     <string name="hint_email_or_number">Email or Phone Number</string>
-    <string name="question_LUA">Don’t Have Account?</string>
+    <string name="question_SingIn">Don’t Have Account?</string>
+    <string name="question_SignUp">Already Have An Account?</string>
 
     <!-- Login/Password -->
     <string name="login">Login</string>
@@ -21,9 +22,10 @@
 
     <!-- Sign In/Sign Up -->
     <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sign_up">Sign Up Here</string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
+    <string name="create_acc">Create Account</string>
 
 
     <!--Support /  Кнопка "Написать в поддержку"  -->
