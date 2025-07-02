@@ -31,5 +31,11 @@ class SingUpUserActivity : AppCompatActivity() {
         binding.tvSupportSingUp.setOnClickListener {
             EmailUtils.sendSupportEmail(this)
         }
+
+        binding.btnCreateAccSingUp.setOnClickListener {
+            val intent = Intent(this, LocationActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
