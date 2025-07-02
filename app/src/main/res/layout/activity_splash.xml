@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/basket_bite"
+        android:textColor="@color/red_startActivity"
         app:layout_constraintTop_toBottomOf="@id/guideline_50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

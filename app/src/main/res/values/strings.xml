@@ -10,5 +10,6 @@
     <string name="hint_name">Name</string>
     <string name="hint_surname">Surname</string>
     <string name="hint_email_or_number">Email or Phone Number</string>
+    <string name="question_LUA">Don’t Have Account?</string>
 
 </resources>
