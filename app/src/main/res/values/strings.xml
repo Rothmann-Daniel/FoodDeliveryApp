@@ -38,4 +38,8 @@
     <string name="choose_email_app">Choose email app</string>
     <string name="email_send_error">Failed to open email app</string>
 
+    <!-- Location -->
+    <string name="choose_location">Choose Your Location </string>
+    <string name="notification_location">To provide you with the best dining experience, we need your permission to access your device\'s location. By enabling location services, we can offer personalized restaurant recommendations, accurate delivery estimates, and ensure a seamless food delivery experience</string>
+
 </resources>

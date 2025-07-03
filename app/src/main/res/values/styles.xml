@@ -123,4 +123,22 @@
         <item name="android:drawableStart">@drawable/ic_google_icon</item>
     </style>
 
+    <!--Loccation-->
+    <style name="ShapeAppearanceOverlay.CustomOutlineBox" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="MyOutlineBox" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="DropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/red_startActivity</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.CustomOutlineBox</item>
+    </style>
+
+
 </resources>
