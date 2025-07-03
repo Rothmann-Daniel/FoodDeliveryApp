@@ -1,12 +1,15 @@
 package com.example.fooddelivery
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -28,40 +31,47 @@ class LocationActivity : AppCompatActivity() {
             insets
         }
 
-        try {
-            val locations = resources.getStringArray(R.array.locations).toList()
+        val location = resources.getStringArray(R.array.locations)
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.dropdown_item,
+            R.id.text1,
+            location
+        )
+        binding.dropdownEditText.setAdapter(adapter)
 
-            val adapter = object : ArrayAdapter<String>(
-                this,
-                R.layout.dropdown_item,
-                R.id.text1,  // Используем ID из dropdown_item.xml
-                locations
-            ) {
-                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                    val view = super.getView(position, convertView, parent)
-                    val textView = view.findViewById<TextView>(R.id.text1)  // Используем R.id.text1
-                    // Дополнительные настройки TextView
-                    return view
-                }
-
-                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                    val view = super.getDropDownView(position, convertView, parent)
-                    val textView = view.findViewById<TextView>(R.id.text1)  // Используем R.id.text1
-                    // Дополнительные настройки TextView для выпадающего списка
-                    return view
-                }
-            }
-
-            binding.dropdownEditText.apply {
-                setAdapter(adapter)
-                setOnItemClickListener { _, _, position, _ ->
-                    val selected = adapter.getItem(position)
-                    Toast.makeText(this@LocationActivity, "Выбрано: $selected", Toast.LENGTH_SHORT).show()
-                }
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "Ошибка инициализации: ${e.message}", Toast.LENGTH_LONG).show()
-            e.printStackTrace()
+        binding.dropdownEditText.setOnItemClickListener { _, _, position, _ ->
+            val selectedLocation = location[position] as String
+            showDialogLocation(selectedLocation)
         }
+
+
+
     }
+
+    fun showDialogLocation(location: String) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_location, null)
+        val dialogBuilder = AlertDialog.Builder(this)
+        val dialog = dialogBuilder.create()
+        dialogView.findViewById<Button>(R.id.btn_positive_LA).setOnClickListener {
+            Toast.makeText(this, "Location: $location", Toast.LENGTH_LONG).show()
+            dialog.dismiss()
+            startActivityWithLocation(location)
+        }
+
+        dialogView.findViewById<Button>(R.id.btn_negative_LA).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setView(dialogView)
+        dialog.show()
+
+    }
+
+    fun startActivityWithLocation(location: String) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("location", location)
+        startActivity(intent)
+        finish()
+    }
+
 }
