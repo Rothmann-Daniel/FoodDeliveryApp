@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/choose_location"
+            android:text="@string/confirmation_location"
             android:layout_margin="5dp"
             android:textSize="26sp"
             android:fontFamily="@font/yeonsung"

@@ -42,7 +42,20 @@
     <string name="choose_location">Choose Your Location </string>
     <string name="notification_location">To provide you with the best dining experience, we need your permission to access your device\'s location. By enabling location services, we can offer personalized restaurant recommendations, accurate delivery estimates, and ensure a seamless food delivery experience</string>
     <string name="choose_location_apply">Do you want to continue with this selected  location? </string>
+    <string name="confirmation_location">Confirmation </string>
     <string name="apply">Apply</string>
     <string name="cancel">Cansel</string>
 
+    <!-- Main Screen -->
+    <string name="explore">Explore Your Favorite Food</string>
+
+    <!-- Bottom Menu -->
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="search">Search</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+
+
+    <!-- Profile -->
 </resources>
