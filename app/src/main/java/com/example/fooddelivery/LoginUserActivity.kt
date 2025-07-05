@@ -2,15 +2,23 @@ package com.example.fooddelivery
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fooddelivery.databinding.ActivityLoginBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
 
 class LoginUserActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +46,76 @@ class LoginUserActivity : AppCompatActivity() {
             finish()
         }
 
+        // Инициализация Firebase Auth
+        auth = Firebase.auth
+
+        binding.btnLoginSingIn.setOnClickListener {
+            val email = binding.edSingUpEmailSingIn.text.toString().trim()
+            val password = binding.edPasswordSingIn.text.toString().trim()
+
+            if (validateInputs(email, password)) {
+                signInWithEmailAndPassword(email, password)
+            }
+        }
+
     }
 
+    private fun validateInputs(email: String, password: String): Boolean {
+        if (email.isEmpty()) {
+            binding.edSingUpEmailSingIn.error = "Please enter email"
+            return false
+        }
+
+        if (password.isEmpty()) {
+            binding.edPasswordSingIn.error = "Please enter password"
+            return false
+        }
+
+        return true
+    }
+
+    private fun signInWithEmailAndPassword(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    checkUserExistsInFirestore(auth.currentUser?.uid ?: "") { exists ->
+                        if (exists) {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "User data not found in database",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            auth.signOut()
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Authentication failed: ${task.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
+    private fun checkUserExistsInFirestore(uid: String, callback: (Boolean) -> Unit) {
+        if (uid.isEmpty()) {
+            callback(false)
+            return
+        }
+
+        Firebase.firestore.collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { document ->
+                callback(document.exists())
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error checking user", e)
+                callback(false)
+            }
+    }
 }
+

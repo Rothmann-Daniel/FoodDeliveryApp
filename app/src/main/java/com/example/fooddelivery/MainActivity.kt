@@ -13,10 +13,14 @@ import com.example.fooddelivery.fragments.HistoryFragment
 import com.example.fooddelivery.fragments.HomeFragment
 import com.example.fooddelivery.fragments.ProfileFragment
 import com.example.fooddelivery.fragments.SearchFragment
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,6 +31,14 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        auth = Firebase.auth
+
+        if (auth.currentUser == null) {
+            startActivity(Intent(this, LoginUserActivity::class.java))
+            finish()
+            return
         }
 
         changeFragment(HomeFragment())
