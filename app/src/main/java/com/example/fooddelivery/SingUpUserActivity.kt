@@ -9,8 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fooddelivery.databinding.ActivitySingUpUserBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -20,6 +25,8 @@ class SingUpUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySingUpUserBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +40,7 @@ class SingUpUserActivity : AppCompatActivity() {
         }
 
         // Инициализация Firebase Auth
-       auth = Firebase.auth
+        auth = Firebase.auth
 
         binding.btnCreateAccSingUp.setOnClickListener {
             val email = binding.edSingUpEmailSingUp.text.toString().trim()
@@ -54,7 +61,19 @@ class SingUpUserActivity : AppCompatActivity() {
             EmailUtils.sendSupportEmail(this)
         }
 
+        // Инициализация Google Sign-In (аналогично LoginActivity)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        binding.btnGoogleSingUp.setOnClickListener {
+            signInWithGoogle()
+        }
     }
+
+
     private fun validateInputs(email: String, password: String, name: String): Boolean {
         if (name.isEmpty()) {
             binding.edUserNameSingUp.error = "Please enter your name"
@@ -129,4 +148,40 @@ class SingUpUserActivity : AppCompatActivity() {
             }
     }
 
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.w("GoogleSignIn", "Google sign in failed", e)
+                Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        Firebase.auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Успешный вход
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, "Firebase auth failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 }
+
+

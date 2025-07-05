@@ -47,6 +47,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")   // Аутентификация
     implementation("com.google.firebase:firebase-firestore") // База данных
 
+    // Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
