@@ -39,7 +39,7 @@ class SingUpUserActivity : AppCompatActivity() {
             insets
         }
 
-        // Инициализация Firebase Auth
+        // Инициализация Firebase Auth Email
         auth = Firebase.auth
 
         binding.btnCreateAccSingUp.setOnClickListener {
@@ -61,7 +61,7 @@ class SingUpUserActivity : AppCompatActivity() {
             EmailUtils.sendSupportEmail(this)
         }
 
-        // Инициализация Google Sign-In (аналогично LoginActivity)
+        // Инициализация Google Sign-Up (аналогично Подключение Google Sign-In)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -71,9 +71,14 @@ class SingUpUserActivity : AppCompatActivity() {
         binding.btnGoogleSingUp.setOnClickListener {
             signInWithGoogle()
         }
+
+        binding.btnFacebookSingUp.setOnClickListener {
+            Toast.makeText(this, "Sorry, we're still working on this service. Use another registration method.", Toast.LENGTH_LONG).show()
+        }
     }
 
 
+    // Проверка введенных данных
     private fun validateInputs(email: String, password: String, name: String): Boolean {
         if (name.isEmpty()) {
             binding.edUserNameSingUp.error = "Please enter your name"
@@ -93,6 +98,7 @@ class SingUpUserActivity : AppCompatActivity() {
         return true
     }
 
+    // Регистрация пользователя
     private fun createUserWithEmailAndPassword(email: String, password: String, name: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -123,6 +129,7 @@ class SingUpUserActivity : AppCompatActivity() {
             }
     }
 
+    // Сохранение данных пользователя в Firestore
     private fun saveUserDataToFirestore(
         uid: String,
         name: String,
@@ -148,11 +155,13 @@ class SingUpUserActivity : AppCompatActivity() {
             }
     }
 
+    // Подключение Google Sign-In
     private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    // Обработка результата Google Sign-In
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -169,6 +178,7 @@ class SingUpUserActivity : AppCompatActivity() {
         }
     }
 
+    // Аутентификация с помощью Google
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         Firebase.auth.signInWithCredential(credential)
