@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.fooddelivery.databinding.ActivityMainBinding
 import com.example.fooddelivery.fragments.CartFragment
 import com.example.fooddelivery.fragments.HistoryFragment
@@ -54,40 +57,12 @@ class MainActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        changeFragment(HomeFragment())
+        val bottomNavigationView = binding.bottomNavigationView
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.bottom_menu_home-> {
-                   changeFragment(HomeFragment())
-                    true
-                }
-                R.id.shopping_cart-> {
-                    changeFragment(CartFragment())
-                    true
-                }
-                R.id.search-> {
-                    changeFragment(SearchFragment())
-                    true
-                }
-                R.id.history-> {
-                    changeFragment(HistoryFragment())
-                    true
-                }
-                R.id.profile-> {
-                    changeFragment(ProfileFragment())
-                    true
-                }
-                else -> false
-            }
-        }
-
+        bottomNavigationView.setupWithNavController(navController)
     }
 
-    private fun changeFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, fragment)
-        fragmentTransaction.commit()
-    }
 }

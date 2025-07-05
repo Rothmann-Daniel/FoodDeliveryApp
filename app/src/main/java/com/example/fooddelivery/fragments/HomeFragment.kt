@@ -57,18 +57,13 @@ class HomeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        handler.removeCallbacks(runnable)// viewPager2.removeCallbacks(runnable)
+        handler.removeCallbacks(runnable)
     }
 
     override fun onResume() {
         super.onResume()
-        handler.postDelayed(runnable, 3000)//viewPager2.postDelayed(runnable, 3000)
+        handler.postDelayed(runnable, 3000)
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewPager2.postDelayed(runnable, 3000)
     }
 
     private fun init() {
