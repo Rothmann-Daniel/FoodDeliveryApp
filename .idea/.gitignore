@@ -1,3 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+google-services.json
+google-services.plist
+firebase-config.json
+/app/google-services.json
+/ios/GoogleService-Info.plist
+.env
