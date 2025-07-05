@@ -7,4 +7,5 @@ firebase-config.json
 /app/google-services.json
 /ios/GoogleService-Info.plist
 .env
-firebaseApiKey=AIzaSyBe54HK8dC8ZnOnO4L9HdabMMzQtIPWAsQ
+
+/google-services.json
