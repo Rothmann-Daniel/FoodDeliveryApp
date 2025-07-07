@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!-- Изображение продукта -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/container_food_item"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_in_container_food_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/im_sandwich"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Название продукта -->
+        <TextView
+            android:id="@+id/tv_food_item_name"
+            style="@style/tv_description_SplashActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Food Name"
+            app:layout_constraintBottom_toBottomOf="@+id/container_food_item"
+            app:layout_constraintStart_toEndOf="@+id/container_food_item"
+            app:layout_constraintTop_toTopOf="@+id/container_food_item" />
+
+        <!-- Цена продукта -->
+        <TextView
+            android:id="@+id/tv_food_item_price"
+            style="@style/tv_title_StartActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="$ 10,00"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/container_food_item" />
+
+        <!-- Кнопка добавления -->
+        <TextView
+            android:id="@+id/tv_btn_food_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/tv_shape_add_cart"
+            android:fontFamily="@font/yeonsung"
+            android:text="@string/add_to_cart"
+            android:textColor="@color/blue"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/container_food_item"
+            app:layout_constraintEnd_toEndOf="@+id/tv_food_item_price"
+            app:layout_constraintStart_toStartOf="@+id/tv_food_item_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_food_item_price" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

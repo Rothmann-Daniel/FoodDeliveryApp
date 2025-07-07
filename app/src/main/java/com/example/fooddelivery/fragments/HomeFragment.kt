@@ -13,6 +13,8 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.fooddelivery.R
 import com.example.fooddelivery.adapters.ImageSliderAdapter
+import com.example.fooddelivery.adapters.PopularAdapter
+import com.example.fooddelivery.models.PopularModel
 
 
 class HomeFragment : Fragment() {
@@ -22,9 +24,12 @@ class HomeFragment : Fragment() {
     private lateinit var imagesList: ArrayList<Int>
     private lateinit var handler: Handler
 
+    private lateinit var popularAdapter: PopularAdapter
+    private lateinit var popularList: ArrayList<PopularModel>
+    private lateinit var popularRecyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -35,6 +40,26 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         viewPager2 = view.findViewById(R.id.imageSlider)
+        popularRecyclerView = view.findViewById(R.id.rv_home_FH)
+
+        //Popular List
+        popularList = ArrayList()
+        popularList.add(PopularModel(R.drawable.im_burger, "Burger","$10"))
+        popularList.add(PopularModel(R.drawable.im_pizza, "Pizza","$15"))
+        popularList.add(PopularModel(R.drawable.im_pasta, "Pasta","$20"))
+        popularList.add(PopularModel(R.drawable.im_french_fries, "French Fries","$5,50"))
+        popularList.add(PopularModel(R.drawable.im_sandwich, "Sandwich","$7"))
+        popularList.add(PopularModel(R.drawable.im_combo, "Combo","$30"))
+        popularList.add(PopularModel(R.drawable.im_hincaly, "Kavkazi Hincaly","$14"))
+        popularList.add(PopularModel(R.drawable.im_chicken_wings_bbq, "Chicken Wings", "$12"))
+        popularList.add(PopularModel(R.drawable.im_sushi, "Sushi","$25"))
+        popularList.add(PopularModel(R.drawable.im_salad, "Salad","$8"))
+        popularList.add(PopularModel(R.drawable.im_desert, "Сake","$9"))
+
+        popularAdapter = PopularAdapter(requireContext(), popularList)
+        popularRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        popularRecyclerView.adapter = popularAdapter
+
         return view
     }
 
@@ -65,7 +90,7 @@ class HomeFragment : Fragment() {
         handler.postDelayed(runnable, 3000)
 
     }
-
+    // Image Slider
     private fun init() {
         imagesList = ArrayList()
         imagesList.add(R.drawable.banner_1)
@@ -99,8 +124,4 @@ class HomeFragment : Fragment() {
     }
         viewPager2.setPageTransformer(transformer)
     }
-
-
-
-
 }
