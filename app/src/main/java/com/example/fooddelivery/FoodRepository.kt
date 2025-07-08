@@ -48,14 +48,14 @@ object FoodRepository {
         ),
         PopularModel(
             R.drawable.im_hincaly,
-            "Kavkazi Hincaly",
+            "Caucasian Khinkali",
             "$14",
             "Traditional Caucasian dumplings",
             "Dough, minced lamb/beef, water, spices"
         ),
         PopularModel(
             R.drawable.im_chicken_wings_bbq,
-            "Chicken Wings",
+            "Chicken Wings BBQ",
             "$12",
             "Spicy BBQ chicken wings",
             "Chicken wings, BBQ sauce, spices"
