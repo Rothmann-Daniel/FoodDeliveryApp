@@ -6,6 +6,10 @@ class PopularModel {
     private var foodName: String = ""
     private var foodPrice: String = ""
 
+    //private var description: String = ""
+
+    // Getters and setters
+
     constructor()
     constructor(
         foodImage: Int?,

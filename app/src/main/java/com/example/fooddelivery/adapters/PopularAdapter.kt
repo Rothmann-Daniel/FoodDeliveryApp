@@ -1,9 +1,11 @@
 package com.example.fooddelivery.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fooddelivery.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
 import com.example.fooddelivery.models.PopularModel
 
@@ -25,6 +27,17 @@ class PopularAdapter(
         holder.foodImage.setImageResource(item.getFoodImage()!!)
         holder.foodName.text = item.getFoodName()
         holder.foodPrice.text = item.getFoodPrice()
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, DetailsActivity::class.java).apply {
+                putExtra("foodImage", item.getFoodImage())
+                putExtra("foodName", item.getFoodName())
+                putExtra("foodPrice", item.getFoodPrice())
+                //putExtra("foodDescription", item.getDescription()) // Добавить эти поля в модель
+               // putExtra("foodIngredients", item.getIngredients())
+            }
+            context.startActivity(intent)
+        }
     }
 
     class PopularViewHolder(binding: HomeFoodItemBinding): RecyclerView.ViewHolder(binding.root) {

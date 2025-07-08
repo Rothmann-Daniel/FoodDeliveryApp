@@ -37,7 +37,7 @@ tools:context=".DetailsActivity">
 
     <!-- Изображение продукта -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/container_food_item"
+        android:id="@+id/container_food_Details"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -49,7 +49,7 @@ tools:context=".DetailsActivity">
         app:layout_constraintTop_toBottomOf="@+id/tv_food_name">
 
         <ImageView
-            android:id="@+id/image_in_container_food_item"
+            android:id="@+id/image_food_Details"
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:background="@drawable/im_sandwich"
@@ -70,7 +70,7 @@ tools:context=".DetailsActivity">
         android:gravity="start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_food_item" />
+        app:layout_constraintTop_toBottomOf="@+id/container_food_Details" />
 
     <TextView
         android:id="@+id/tv_short_description_text"
