@@ -24,17 +24,17 @@ class PopularAdapter(
 
     override fun onBindViewHolder(holder: PopularViewHolder, position: Int) {
         val item = list[position]
-        holder.foodImage.setImageResource(item.getFoodImage()!!)
-        holder.foodName.text = item.getFoodName()
-        holder.foodPrice.text = item.getFoodPrice()
+        holder.foodImage.setImageResource(item.foodImage)
+        holder.foodName.text = item.foodName
+        holder.foodPrice.text = item.foodPrice
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailsActivity::class.java).apply {
-                putExtra("foodImage", item.getFoodImage())
-                putExtra("foodName", item.getFoodName())
-                putExtra("foodPrice", item.getFoodPrice())
-                //putExtra("foodDescription", item.getDescription()) // Добавить эти поля в модель
-               // putExtra("foodIngredients", item.getIngredients())
+                putExtra("foodImage", item.foodImage)
+                putExtra("foodName", item.foodName)
+                putExtra("foodPrice", item.foodPrice)
+                putExtra("foodDescription", item.foodDescription)
+                putExtra("foodIngredients", item.foodIngredients)
             }
             context.startActivity(intent)
         }
