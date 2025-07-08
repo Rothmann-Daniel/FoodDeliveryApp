@@ -1,4 +1,4 @@
-package com.example.fooddelivery.fragments
+package com.example.fooddelivery.presentation.fragments
 
 import android.os.Bundle
 import android.os.Handler
@@ -8,17 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.fooddelivery.BannerRepository
-import com.example.fooddelivery.FoodRepository
+import com.example.fooddelivery.data.repository.BannerRepository
+import com.example.fooddelivery.data.repository.FoodRepository
 import com.example.fooddelivery.R
-import com.example.fooddelivery.adapters.ImageSliderAdapter
-import com.example.fooddelivery.adapters.PopularAdapter
-import com.example.fooddelivery.models.PopularModel
+import com.example.fooddelivery.presentation.adapters.ImageSliderAdapter
+import com.example.fooddelivery.presentation.adapters.PopularAdapter
+import com.example.fooddelivery.data.models.PopularModel
 
 
 class HomeFragment : Fragment() {

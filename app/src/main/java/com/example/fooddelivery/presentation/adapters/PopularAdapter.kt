@@ -1,19 +1,19 @@
-package com.example.fooddelivery.adapters
+package com.example.fooddelivery.presentation.adapters
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fooddelivery.DetailsActivity
+import com.example.fooddelivery.presentation.ui.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
-import com.example.fooddelivery.models.PopularModel
+import com.example.fooddelivery.data.models.PopularModel
 
 class PopularAdapter(
     val context: Context,
     val list: ArrayList<PopularModel>): RecyclerView.Adapter<PopularAdapter.PopularViewHolder>(){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularAdapter.PopularViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularViewHolder {
         val binding = HomeFoodItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return PopularViewHolder(binding)
     }

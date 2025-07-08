@@ -1,4 +1,4 @@
-package com.example.fooddelivery.adapters
+package com.example.fooddelivery.presentation.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

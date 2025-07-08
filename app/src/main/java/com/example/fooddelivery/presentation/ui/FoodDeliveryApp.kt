@@ -1,4 +1,4 @@
-package com.example.fooddelivery
+package com.example.fooddelivery.presentation.ui
 
 import android.app.Application
 import com.google.firebase.FirebaseApp

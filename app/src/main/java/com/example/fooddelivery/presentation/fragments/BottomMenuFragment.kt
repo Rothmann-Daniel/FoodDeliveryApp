@@ -1,16 +1,15 @@
-package com.example.fooddelivery.fragments
+package com.example.fooddelivery.presentation.fragments
 
 import android.os.Bundle
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fooddelivery.FoodRepository
+import com.example.fooddelivery.data.repository.FoodRepository
 import com.example.fooddelivery.R
-import com.example.fooddelivery.adapters.PopularAdapter
-import com.example.fooddelivery.models.PopularModel
+import com.example.fooddelivery.presentation.adapters.PopularAdapter
+import com.example.fooddelivery.data.models.PopularModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomMenuFragment : BottomSheetDialogFragment() {

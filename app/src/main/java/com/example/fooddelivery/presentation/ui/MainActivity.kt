@@ -1,4 +1,4 @@
-package com.example.fooddelivery
+package com.example.fooddelivery.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,16 +6,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivityMainBinding
-import com.example.fooddelivery.fragments.CartFragment
-import com.example.fooddelivery.fragments.HistoryFragment
-import com.example.fooddelivery.fragments.HomeFragment
-import com.example.fooddelivery.fragments.ProfileFragment
-import com.example.fooddelivery.fragments.SearchFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

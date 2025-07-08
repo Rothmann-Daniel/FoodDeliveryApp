@@ -1,8 +1,9 @@
-package com.example.fooddelivery
+package com.example.fooddelivery.domain.utils
 
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.example.fooddelivery.R
 
 
 object EmailUtils {

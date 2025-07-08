@@ -1,4 +1,6 @@
-package com.example.fooddelivery
+package com.example.fooddelivery.data.repository
+
+import com.example.fooddelivery.R
 
 object BannerRepository {
     val bannerList = mutableListOf<Int>()
