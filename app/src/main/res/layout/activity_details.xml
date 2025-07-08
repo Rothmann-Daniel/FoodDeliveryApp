@@ -119,7 +119,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_title" />
 
         <!-- Заказ -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_to_cart_BM"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
