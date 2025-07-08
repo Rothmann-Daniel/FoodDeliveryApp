@@ -7,6 +7,8 @@
     <color name="grey">#AEAFB4</color>
     <color name="red_startActivity">#92000A</color>
     <color name="btn_next_startActivity">#6F92000A</color>
+    <color name="btn_back_home">#FEAD1D</color>
+
 
 
 </resources>

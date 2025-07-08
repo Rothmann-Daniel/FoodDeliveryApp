@@ -51,6 +51,7 @@ dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.3")
+    implementation(libs.androidx.recyclerview)
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.3")
     // UI
     implementation(libs.androidx.core.ktx)

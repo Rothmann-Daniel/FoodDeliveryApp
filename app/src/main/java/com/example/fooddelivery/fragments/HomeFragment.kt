@@ -7,10 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.example.fooddelivery.BannerRepository
+import com.example.fooddelivery.FoodRepository
 import com.example.fooddelivery.R
 import com.example.fooddelivery.adapters.ImageSliderAdapter
 import com.example.fooddelivery.adapters.PopularAdapter
@@ -27,8 +31,10 @@ class HomeFragment : Fragment() {
     private lateinit var popularAdapter: PopularAdapter
     private lateinit var popularList: ArrayList<PopularModel>
     private lateinit var popularRecyclerView: RecyclerView
+    private lateinit var goMenu: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
     }
 
@@ -41,24 +47,20 @@ class HomeFragment : Fragment() {
 
         viewPager2 = view.findViewById(R.id.imageSlider)
         popularRecyclerView = view.findViewById(R.id.rv_home_FH)
+        goMenu = view.findViewById(R.id.btn_go_menu)
 
         //Popular List
-        popularList = ArrayList()
-        popularList.add(PopularModel(R.drawable.im_burger, "Burger","$10"))
-        popularList.add(PopularModel(R.drawable.im_pizza, "Pizza","$15"))
-        popularList.add(PopularModel(R.drawable.im_pasta, "Pasta","$20"))
-        popularList.add(PopularModel(R.drawable.im_french_fries, "French Fries","$5,50"))
-        popularList.add(PopularModel(R.drawable.im_sandwich, "Sandwich","$7"))
-        popularList.add(PopularModel(R.drawable.im_combo, "Combo","$30"))
-        popularList.add(PopularModel(R.drawable.im_hincaly, "Kavkazi Hincaly","$14"))
-        popularList.add(PopularModel(R.drawable.im_chicken_wings_bbq, "Chicken Wings", "$12"))
-        popularList.add(PopularModel(R.drawable.im_sushi, "Sushi","$25"))
-        popularList.add(PopularModel(R.drawable.im_salad, "Salad","$8"))
-        popularList.add(PopularModel(R.drawable.im_desert, "Сake","$9"))
+        popularList = FoodRepository.popularMenu as ArrayList<PopularModel>
 
         popularAdapter = PopularAdapter(requireContext(), popularList)
         popularRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         popularRecyclerView.adapter = popularAdapter
+
+        //Go Menu
+        goMenu.setOnClickListener {
+           val bottomSheetMenu = BottomMenuFragment()
+            bottomSheetMenu.show(parentFragmentManager, "bottomSheetMenu")
+        }
 
         return view
     }
@@ -77,7 +79,8 @@ class HomeFragment : Fragment() {
     }
 
     private val runnable = Runnable {
-        viewPager2.currentItem = viewPager2.currentItem + 1
+        val current = viewPager2.currentItem
+        viewPager2.setCurrentItem(current + 1, true)
     }
 
     override fun onPause() {
@@ -92,20 +95,14 @@ class HomeFragment : Fragment() {
     }
     // Image Slider
     private fun init() {
-        imagesList = ArrayList()
-        imagesList.add(R.drawable.banner_1)
-        imagesList.add(R.drawable.banner_2)
-        imagesList.add(R.drawable.banner_3)
-        imagesList.add(R.drawable.banner_4)
-        imagesList.add(R.drawable.banner_5)
-        imagesList.add(R.drawable.banner_6)
-        imagesList.add(R.drawable.banner_7)
-        imagesList.add(R.drawable.banner_8)
-        imagesList.add(R.drawable.banner_9)
-        imagesList.add(R.drawable.banner_10)
+        imagesList = BannerRepository.bannerList as ArrayList<Int>
+
+        // Устанавливаем начальную позицию в середину "бесконечного" списка
+        val initialPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2 % imagesList.size)
 
         adapter = ImageSliderAdapter(requireContext(), imagesList, viewPager2)
         viewPager2.adapter = adapter
+        viewPager2.setCurrentItem(initialPosition, false)
         handler = Handler(Looper.myLooper()!!)
         viewPager2.offscreenPageLimit = 3
         viewPager2.clipToPadding = false
@@ -124,4 +121,5 @@ class HomeFragment : Fragment() {
     }
         viewPager2.setPageTransformer(transformer)
     }
+
 }

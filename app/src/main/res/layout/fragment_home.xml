@@ -35,11 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/popular"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_go_menu"
+            app:layout_constraintBaseline_toBaselineOf="@id/btn_go_menu"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/tv_go_menu"
+            android:id="@+id/btn_go_menu"
             style="@style/btn_signInSignUp.login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
