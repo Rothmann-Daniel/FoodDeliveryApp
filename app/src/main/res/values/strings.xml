@@ -66,6 +66,12 @@
     <string name="short_description">Short description</string>
     <string name="ingredients">Ingredients</string>
     <string name="menu">Menu</string>
+    <string name="price">Price</string>
+
+
+    <string name="delivery_time">Delivery time</string>
+    <string name="delivery_fee">Delivery fee</string>
+    <string name="delivery_address">Delivery address</string>
 
 
     <!-- Profile -->
