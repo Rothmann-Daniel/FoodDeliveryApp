@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.DetailsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.DetailsActivity">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_home"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ic_back"
+            android:outlineAmbientShadowColor="@color/btn_next_startActivity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_food_name"
+            style="@style/tv_title_StartActivity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/food_name"
+            android:textColor="@color/black"
+            android:gravity="start"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:maxWidth="200dp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_food_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back_home" />
+
+        <TextView
+            android:id="@+id/tv_food_price"
+            style="@style/tv_title_StartActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/price"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_food_name"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Изображение продукта -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/container_food_Details"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintDimensionRatio="1:0.75"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_food_name">
+
+            <ImageView
+                android:id="@+id/image_food_Details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/im_burger" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Описание -->
+        <TextView
+            android:id="@+id/tv_short_title_description"
+            style="@style/description_menu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/short_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_food_Details" />
+
+        <TextView
+            android:id="@+id/tv_short_description_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/description_text_menu"
+            android:text="@string/short_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_short_title_description" />
+
+        <!-- Состав -->
+
+        <TextView
+            android:id="@+id/tv_ingredients_title"
+            style="@style/description_menu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/ingredients"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_short_description_text" />
+
+        <TextView
+            android:id="@+id/tv_ingredients_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/description_text_menu"
+            android:text="@string/ingredients"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_title" />
+
+        <!-- Заказ -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_to_cart_BM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/tv_shape_add_cart"
+            android:text="@string/add_to_cart"
+            android:textColor="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ingredients_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

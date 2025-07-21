@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.SingUpUserActivity">
+
+    <ImageView
+        android:id="@+id/iv_logo_SingUp"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="85dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title_SingUp"
+        style="@style/tv_title_StartActivity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/basket_bite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_logo_SingUp" />
+
+    <TextView
+        android:id="@+id/tv_description_SingUp"
+        style="@style/tv_description_SplashActivity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="@string/delievery_favorite_food"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_SingUp" />
+
+    <TextView
+        android:id="@+id/tv_joinMoto_SingUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/yeonsung"
+        android:text="@string/sign_up"
+        android:textAllCaps="false"
+        android:textColor="@color/red_startActivity"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description_SingUp" />
+
+    <EditText
+        android:id="@+id/ed_userName_SingUp"
+        style="@style/CustomEditTextStyle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_person_add_24"
+        android:hint="@string/hint_name"
+        android:inputType="text"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_joinMoto_SingUp" />
+
+    <EditText
+        android:id="@+id/ed_sing_up_Email_SingUp"
+        style="@style/CustomEditTextStyle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_email"
+        android:hint="@string/hint_email_or_number"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_userName_SingUp" />
+
+    <EditText
+        android:id="@+id/ed_password_SingUp"
+        style="@style/CustomEditTextStyle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_lock"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_sing_up_Email_SingUp" />
+
+
+    <TextView
+        android:id="@+id/tv_moto2_SingUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/yeonsung"
+        android:text="or \n Sign Up With"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/ed_password_SingUp"
+        app:layout_constraintStart_toStartOf="@+id/ed_password_SingUp"
+        app:layout_constraintTop_toBottomOf="@+id/ed_password_SingUp" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_facebook_SingUp"
+        style="@style/btn_signInSignUp.facebook"
+        android:layout_marginEnd="24dp"
+        android:text="@string/facebook"
+        app:layout_constraintEnd_toEndOf="@+id/tv_moto2_SingUp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_google_SingUp"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_google_SingUp"
+        style="@style/btn_signInSignUp.google"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/google"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_moto2_SingUp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_moto2_SingUp"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_createAcc_SingUp"
+        style="@style/btn_signInSignUp.login"
+        android:layout_marginTop="16dp"
+        android:text="@string/create_acc"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintEnd_toEndOf="@+id/btn_google_SingUp"
+        app:layout_constraintStart_toStartOf="@+id/btn_facebook_SingUp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_facebook_SingUp" />
+
+    <TextView
+        android:id="@+id/tv_question_SingUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/question_SignUp"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="14sp"
+        android:fontFamily="@font/yeonsung"
+        app:layout_constraintEnd_toEndOf="@+id/btn_createAcc_SingUp"
+        app:layout_constraintStart_toStartOf="@+id/btn_createAcc_SingUp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_createAcc_SingUp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_support_SingUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/ic_support"
+        android:fontFamily="@font/yeonsung"
+        android:gravity="center_vertical|start"
+        android:text="@string/supportTitle"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,78 @@
 <resources>
-    <string name="app_name">Food Delivery</string>
+    <!-- title and description -->
+    <string name="app_name">BasketBite</string>
+    <string name="basket_bite">BasketBite</string>
+    <string name="delievery_favorite_food">Deliever Favorite Food</string>
+    <string name="design">Design By Daniel Rothmann</string>
+    <string name="title_StartActivity">Enjoy Restaurant Quality Meals at Home</string>
+    <string name="join_moto">Login To Your Account</string>
+
+    <!-- hint and question -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_email_or_number">Email or Phone Number</string>
+    <string name="question_SingIn">Don’t Have Account?</string>
+    <string name="question_SignUp">Already Have An Account?</string>
+
+    <!-- Login/Password -->
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+
+    <!-- Sign In/Sign Up -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up Here</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="create_acc">Create Account</string>
+
+
+    <!--Support /  Кнопка "Написать в поддержку"  -->
+    <string name="supportTitle">Support</string>
+    <string name="support">Contact Support</string>
+    <string name="support_email">danilarothmann@gmail.com</string> <!-- support email -->
+    <string name="support_email_subject">Message to BasketBite </string>
+    <string name="support_email_body">Hello BasketBite, \n </string>
+    <string name="no_email_app">No email app found on this device</string>
+    <string name="choose_email_app">Choose email app</string>
+    <string name="email_send_error">Failed to open email app</string>
+
+    <!-- Location -->
+    <string name="choose_location">Choose Your Location </string>
+    <string name="notification_location">To provide you with the best dining experience, we need your permission to access your device\'s location. By enabling location services, we can offer personalized restaurant recommendations, accurate delivery estimates, and ensure a seamless food delivery experience</string>
+    <string name="choose_location_apply">Do you want to continue with this selected  location? </string>
+    <string name="confirmation_location">Confirmation </string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cansel</string>
+
+    <!-- Main Screen -->
+    <string name="explore">Explore Your Favorite Food</string>
+
+    <!-- Bottom Menu -->
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="search">Search</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+
+    <!--Fragment-->
+
+    <!--Home Fragment-->
+    <string name="popular">Popular</string>
+    <string name="go_menu">View Menu</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="food_name">Food Name</string>
+    <string name="short_description">Short description</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="menu">Menu</string>
+    <string name="price">Price</string>
+
+
+    <string name="delivery_time">Delivery time</string>
+    <string name="delivery_fee">Delivery fee</string>
+    <string name="delivery_address">Delivery address</string>
+
+
+    <!-- Profile -->
 </resources>
