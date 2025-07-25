@@ -77,7 +77,7 @@ object FoodRepository {
         ),
         PopularModel(
             R.drawable.im_desert,
-            "Сake",
+            "Cake",
             "$9",
             "Homemade delicious cake",
             "Flour, eggs, sugar, cream, berries"

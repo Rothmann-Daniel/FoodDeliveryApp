@@ -7,4 +7,3 @@ data class PopularModel(
     val foodDescription: String,     // Описание
     val foodIngredients: String      // Состав
 )
-//init dev

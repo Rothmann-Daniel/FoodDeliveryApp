@@ -74,5 +74,7 @@
     <string name="delivery_address">Delivery address</string>
 
 
-    <!-- Profile -->
+    <!-- Search -->
+    <string name="what_to_order">What do you want to order?</string>
+
 </resources>
