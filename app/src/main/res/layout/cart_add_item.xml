@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Изображение продукта -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/food_item_Cart"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_food_item_Cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/im_chicken_wings_bbq"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Название продукта -->
+        <TextView
+            android:id="@+id/tv_food_item_name_Cart"
+            style="@style/tv_description_SplashActivity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/food_name"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_food_item_price_Cart"
+            app:layout_constraintEnd_toStartOf="@id/controls_layout"
+            app:layout_constraintStart_toEndOf="@id/food_item_Cart"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Цена продукта -->
+        <TextView
+            android:id="@+id/tv_food_item_price_Cart"
+            style="@style/tv_title_StartActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/design_price"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/food_item_Cart"
+            app:layout_constraintEnd_toEndOf="@id/tv_food_item_name_Cart"
+            app:layout_constraintStart_toStartOf="@id/tv_food_item_name_Cart" />
+
+
+        <!-- Блок управления (кнопки + количество) -->
+        <LinearLayout
+            android:id="@+id/controls_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_food_item_name_Cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_food_item_name_Cart">
+
+            <!-- Кнопка минус -->
+            <ImageButton
+                android:id="@+id/im_btn_minus_Cart"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/contentDescription_minus"
+                app:srcCompat="@drawable/ic_minus" />
+
+            <!-- Количество -->
+            <TextView
+                android:id="@+id/tv_count_Cart"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:fontFamily="@font/yeonsung"
+                tools:text="1" />
+
+            <!-- Кнопка плюс -->
+            <ImageButton
+                android:id="@+id/im_btn_plus_Cart"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/contentDescription_plus"
+                app:srcCompat="@drawable/ic_plus" />
+        </LinearLayout>
+
+        <!-- Кнопка удаления -->
+        <ImageButton
+            android:id="@+id/im_btn_trash_Cart"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/contentDescription_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/controls_layout"
+            app:layout_constraintStart_toStartOf="@id/controls_layout"
+            app:layout_constraintTop_toBottomOf="@id/controls_layout"
+            app:srcCompat="@drawable/ic_trash"
+            app:tint="@android:color/holo_red_dark" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
