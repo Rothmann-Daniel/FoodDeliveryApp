@@ -46,6 +46,9 @@ class SearchFragment : Fragment() {
 
         // Настройка поиска
         setupSearch()
+
+        // Первоначальная проверка на пустоту
+        checkIfEmpty()
     }
 
     private fun setupSearch() {
@@ -82,5 +85,43 @@ class SearchFragment : Fragment() {
             }
         }
         searchAdapter.notifyDataSetChanged()
+        checkIfEmpty()
+    }
+
+    private fun checkIfEmpty() {
+        if (searchList.isEmpty()) {
+            // Анимация скрытия RecyclerView
+            binding.rvSearchMenu.animate()
+                .alpha(0f)  // Плавное исчезновение
+                .setDuration(200)  // Длительность 200 мс
+                .withEndAction {
+                    binding.rvSearchMenu.visibility = View.GONE  // Полное скрытие после анимации
+                }
+
+            // Анимация появления emptyView
+            binding.emptySearchView.alpha = 0f  // Начальное состояние (прозрачное)
+            binding.emptySearchView.visibility =
+                View.VISIBLE  // Делаем видимым (но пока прозрачным)
+            binding.emptySearchView.animate()
+                .alpha(1f)  // Плавное появление
+                .setDuration(200)  // Длительность 200 мс
+                .start()
+        } else {
+            // Анимация скрытия emptyView
+            binding.emptySearchView.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction {
+                    binding.emptySearchView.visibility = View.GONE
+                }
+
+            // Анимация появления RecyclerView
+            binding.rvSearchMenu.alpha = 0f
+            binding.rvSearchMenu.visibility = View.VISIBLE
+            binding.rvSearchMenu.animate()
+                .alpha(1f)
+                .setDuration(200)
+                .start()
+        }
     }
 }

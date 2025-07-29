@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.SearchFragment">
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchBar"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -14,27 +15,22 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="@string/what_to_order"
         android:fontFamily="@font/yeonsung"
+        android:hint="@string/what_to_order"
         android:textColorHint="@color/blue_light"
         app:boxStrokeColor="@color/blue_light"
-
-
         app:boxStrokeErrorColor="@color/red_startActivity"
         app:boxStrokeWidth="1dp"
         app:hintTextColor="@color/blue_light"
-
-
         app:iconStartPadding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-
-
         app:layout_constraintStart_toStartOf="parent"
-
-
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_search_24"
-        app:startIconTint="@color/blue_light">
+        app:startIconTint="@color/blue_light"
+        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/ic_cancel_24"
+        app:endIconTint="@color/blue_light">
 
         <EditText
             android:id="@+id/ed_searchBar_Menu"
@@ -46,8 +42,8 @@
             android:maxLines="1"
             android:paddingStart="48dp"
             android:singleLine="true"
-            android:textColor="@color/black"
-            />
+            android:textColor="@color/black" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -57,8 +53,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/menu"
-        android:textSize="40sp"
         android:textColor="@color/black"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBar" />
@@ -75,6 +71,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_search"
         tools:listitem="@layout/home_food_item" />
+
+    <!-- Контейнер для состояния "ничего не найдено" -->
+    <LinearLayout
+        android:id="@+id/emptySearchView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_search">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/empty_basket"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/nothing_found"
+            android:textAlignment="center"
+            android:textColor="@color/blue_light"
+            android:textSize="18sp"
+            android:fontFamily="@font/yeonsung"/>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

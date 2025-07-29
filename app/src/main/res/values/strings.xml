@@ -76,5 +76,6 @@
 
     <!-- Search -->
     <string name="what_to_order">What do you want to order?</string>
+    <string name="nothing_found">Nothing found for your search. Please repeat your request</string>
 
 </resources>
