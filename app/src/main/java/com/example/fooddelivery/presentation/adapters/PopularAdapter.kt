@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddelivery.presentation.ui.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
 import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.domain.repository.CartRepository
 
 class PopularAdapter(
     val context: Context,
@@ -28,6 +30,11 @@ class PopularAdapter(
         holder.foodName.text = item.foodName
         holder.foodPrice.text = item.foodPrice
 
+        holder.addToCartButton.setOnClickListener {
+            CartRepository.addToCart(item)
+            Toast.makeText(context, "${item.foodName} добавлен в корзину", Toast.LENGTH_SHORT).show()
+        }
+
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailsActivity::class.java).apply {
                 putExtra("foodImage", item.foodImage)
@@ -40,12 +47,12 @@ class PopularAdapter(
         }
     }
 
-    class PopularViewHolder(binding: HomeFoodItemBinding): RecyclerView.ViewHolder(binding.root) {
 
+    class PopularViewHolder(binding: HomeFoodItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val foodImage = binding.imageInContainerFoodItem
         val foodName = binding.tvFoodItemName
         val foodPrice = binding.tvFoodItemPrice
-
+        val addToCartButton = binding.tvBtnFoodItem
     }
 
 }

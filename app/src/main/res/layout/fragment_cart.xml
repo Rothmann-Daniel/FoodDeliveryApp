@@ -39,12 +39,24 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         style="@style/bt_next_StartActivity"
-        android:text="@string/continue_cart"
+        android:text="@string/continue_with_price"
         app:cornerRadius="10dp"
         app:icon="@drawable/ic_arrow_right"
         app:iconGravity="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/empty_cart_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/empty_cart"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
