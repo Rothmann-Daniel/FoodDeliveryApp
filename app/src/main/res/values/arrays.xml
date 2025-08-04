@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="locations">
-        <item>Moscow</item>
+        <item>Ho Shi Min</item>
         <item>St. Petersburg</item>
-        <item>Novosibirsk</item>
-        <item>Kazan</item>
+        <item>Tokio</item>
+        <item>Berlin</item>
     </string-array>
 </resources>

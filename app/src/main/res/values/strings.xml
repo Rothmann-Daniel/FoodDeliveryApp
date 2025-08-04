@@ -7,6 +7,15 @@
     <string name="title_StartActivity">Enjoy Restaurant Quality Meals at Home</string>
     <string name="join_moto">Login To Your Account</string>
 
+    <!--  contentDescription -->
+    <string name="contentDescription_back">Back</string>
+    <string name="contentDescription_next">Next</string>
+    <string name="contentDescription_done">Done</string>
+    <string name="contentDescription_plus">Plus one</string>
+    <string name="contentDescription_minus">Minus one</string>
+    <string name="contentDescription_delete">Delete</string>
+
+
     <!-- hint and question -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -68,11 +77,23 @@
     <string name="menu">Menu</string>
     <string name="price">Price</string>
 
+    <!-- Search -->
+    <string name="what_to_order">What do you want to order?</string>
+    <string name="nothing_found">Nothing found for your search. Please repeat your request</string>
 
+    <!-- Cart -->
+    <string name="continue_cart">Continue</string>
+    <string name="continue_with_price">Continue with price (%1$s)</string>
+    <string name="design_price">$ 10,00</string>
+    <string name="empty_cart">Your shopping cart is empty</string>
+    <string name="item_added_to_cart">%s added to cart</string>
+
+    <!-- Delivery -->
     <string name="delivery_time">Delivery time</string>
     <string name="delivery_fee">Delivery fee</string>
     <string name="delivery_address">Delivery address</string>
 
+    <!-- Other -->
+    <string name="next">Next</string>
 
-    <!-- Profile -->
 </resources>

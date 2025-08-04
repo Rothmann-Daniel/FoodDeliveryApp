@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="26dp"
+    android:height="26dp"
+    android:viewportWidth="26"
+    android:viewportHeight="26">
+
+  <!-- Полупрозрачный фон (10% opacity) -->
+  <path
+      android:pathData="M8,0L18,0A8,8 0,0 1,26 8L26,18A8,8 0,0 1,18 26L8,26A8,8 0,0 1,0 18L0,8A8,8 0,0 1,8 0z"
+      android:fillColor="#191E7AC5"
+      android:fillAlpha="0.1"/>
+
+  <!-- Основной фон с градиентом -->
+  <path
+      android:pathData="M8,0L18,0A8,8 0,0 1,26 8L26,18A8,8 0,0 1,18 26L8,26A8,8 0,0 1,0 18L0,8A8,8 0,0 1,8 0z">
+    <aapt:attr name="android:fillColor">
+      <gradient
+          android:startX="13"
+          android:startY="0"
+          android:endX="13"
+          android:endY="26"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF1E7AC5"/>
+        <item android:offset="1" android:color="#FF0D5A9E"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+
+  <!-- Иконка плюс (белая) -->
+  <path
+      android:pathData="M12.46,12.46V8H13.89V12.46H18.13V13.89H13.89V18H12.46V13.89H8.13V12.46H12.46Z"
+      android:fillColor="#FFFFFFFF"/>
+</vector>

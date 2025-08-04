@@ -134,12 +134,15 @@
         <item name="cornerSize">8dp</item>
     </style>
 
+
+    <!-- Menu -->
     <style name="DropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeColor">@color/red_startActivity</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.CustomOutlineBox</item>
     </style>
 
+    <!-- Menu description -->
     <style name="description_menu" parent="tv_description_SplashActivity">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
@@ -148,6 +151,7 @@
         <item name="android:textColor">@color/blue</item>
     </style>
 
+    <!-- Menu text -->
     <style name="description_text_menu">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
@@ -157,6 +161,26 @@
         <item name="android:fontFamily">@font/yeonsung</item>
         <item name="textAllCaps">false</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <!-- SearchFragment -->
+
+    <!-- SearchBar-->
+    <style name="MySearchBarTextAppearance" parent="TextAppearance.Material3.SearchBar">
+        <item name="android:textColor">@color/blue_light</item>
+        <item name="android:textColorHint">@color/blue_light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/yeonsung</item>
+        <item name="textAllCaps">false</item>
+
+    </style>
+
+    <style name="MySearchBarStyle" parent="Widget.Material3.SearchBar">
+        <item name="android:textAppearance">@style/MySearchBarTextAppearance</item>
+        <item name="iconTint">@color/blue_light</item>
+        <item name="strokeColor">@color/blue_light</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
 
