@@ -57,7 +57,7 @@ object FoodRepository {
         PopularModel(
             R.drawable.im_chicken_wings_bbq,
             "Chicken Wings BBQ",
-            "$12",
+            "$12.50",
             "Spicy BBQ chicken wings",
             "Chicken wings, BBQ sauce, spices"
         ),
