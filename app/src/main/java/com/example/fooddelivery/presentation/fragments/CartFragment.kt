@@ -51,12 +51,6 @@ class CartFragment : Fragment() {
         }
     }
 
-    private fun setupContinueButton() {
-        binding.btContinueCart.setOnClickListener {
-            // Обработка перехода к оформлению заказа
-        }
-    }
-
     private fun updateTotalPrice() {
         val totalPrice = CartRepository.getTotalPrice()
 
@@ -81,6 +75,12 @@ class CartFragment : Fragment() {
             binding.rvCart.visibility = View.VISIBLE
             binding.emptyCartView.visibility = View.GONE
             binding.btContinueCart.isEnabled = true
+        }
+    }
+
+    private fun setupContinueButton() {
+        binding.btContinueCart.setOnClickListener {
+            // Обработка перехода к оформлению заказа
         }
     }
 }
