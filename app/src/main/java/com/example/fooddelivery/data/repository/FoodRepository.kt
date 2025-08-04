@@ -29,7 +29,7 @@ object FoodRepository {
         PopularModel(
             R.drawable.im_french_fries,
             "French Fries",
-            "$5,50",
+            "$5.50",
             "Crispy golden fries",
             "Potatoes, salt, vegetable oil"
         ),
