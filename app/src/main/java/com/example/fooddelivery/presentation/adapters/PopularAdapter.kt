@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fooddelivery.R
 import com.example.fooddelivery.presentation.ui.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
 import com.example.fooddelivery.data.models.PopularModel
 import com.example.fooddelivery.domain.repository.CartRepository
+import com.example.fooddelivery.domain.utils.toPriceString
 
 class PopularAdapter(
     private val context: Context,
@@ -23,11 +25,15 @@ class PopularAdapter(
             with(binding) {
                 imageInContainerFoodItem.setImageResource(item.foodImage)
                 tvFoodItemName.text = item.foodName
-                tvFoodItemPrice.text = "$${"%.2f".format(item.foodPrice)}"
+                tvFoodItemPrice.text = item.foodPrice.toPriceString()
 
                 tvBtnFoodItem.setOnClickListener {
                     CartRepository.addToCart(item)
-                    Toast.makeText(context, "${item.foodName} добавлен в корзину", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.item_added_to_cart, item.foodName),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 root.setOnClickListener {

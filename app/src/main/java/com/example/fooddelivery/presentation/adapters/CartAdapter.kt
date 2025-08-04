@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddelivery.databinding.CartAddItemBinding
 import com.example.fooddelivery.domain.model.CartItem
 import com.example.fooddelivery.domain.repository.CartRepository
+import com.example.fooddelivery.domain.utils.toPriceString
 
 class CartAdapter(
     private val context: Context
@@ -21,16 +22,16 @@ class CartAdapter(
             with(binding) {
                 imageFoodItemCart.setImageResource(item.foodItem.foodImage)
                 tvFoodItemNameCart.text = item.foodItem.foodName
-                tvFoodItemPriceCart.text = "$${"%.2f".format(item.foodItem.foodPrice)}"
+                tvFoodItemPriceCart.text = item.foodItem.foodPrice.toPriceString()
                 tvCountCart.text = item.quantity.toString()
 
                 imBtnPlusCart.setOnClickListener {
-                    val currentItem = getItem(adapterPosition)
+                    val currentItem = getItem(bindingAdapterPosition)
                     CartRepository.updateQuantity(currentItem, currentItem.quantity + 1)
                 }
 
                 imBtnMinusCart.setOnClickListener {
-                    val currentItem = getItem(adapterPosition)
+                    val currentItem = getItem(bindingAdapterPosition)
                     CartRepository.updateQuantity(currentItem, currentItem.quantity - 1)
                 }
 

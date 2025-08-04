@@ -54,6 +54,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/empty_cart"
+        android:fontFamily="@font/yeonsung"
+        android:textColor="@color/blue_light"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
