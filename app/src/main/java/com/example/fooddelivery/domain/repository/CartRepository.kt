@@ -1,11 +1,18 @@
 package com.example.fooddelivery.domain.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.fooddelivery.data.models.PopularModel
 import com.example.fooddelivery.domain.model.CartItem
 
 object CartRepository {
     private val _cartItems = mutableListOf<CartItem>()
-    val cartItems: List<CartItem> get() = _cartItems.toList()
+    private val _cartItemsLiveData = MutableLiveData<List<CartItem>>()
+    val cartItemsLiveData: LiveData<List<CartItem>> get() = _cartItemsLiveData
+
+    init {
+        _cartItemsLiveData.value = _cartItems.toList()
+    }
 
     fun addToCart(item: PopularModel) {
         val existingItem = _cartItems.find { it.foodItem.foodName == item.foodName }
@@ -14,10 +21,12 @@ object CartRepository {
         } else {
             _cartItems.add(CartItem(item))
         }
+        updateLiveData()
     }
 
     fun removeFromCart(item: CartItem) {
         _cartItems.remove(item)
+        updateLiveData()
     }
 
     fun updateQuantity(item: CartItem, newQuantity: Int) {
@@ -26,10 +35,12 @@ object CartRepository {
         } else {
             _cartItems.remove(item)
         }
+        updateLiveData()
     }
 
     fun clearCart() {
         _cartItems.clear()
+        updateLiveData()
     }
 
     fun getTotalPrice(): Double {
@@ -37,5 +48,9 @@ object CartRepository {
             val price = item.foodItem.foodPrice.replace("[^0-9.]".toRegex(), "").toDoubleOrNull() ?: 0.0
             price * item.quantity
         }
+    }
+
+    private fun updateLiveData() {
+        _cartItemsLiveData.postValue(_cartItems.toList())
     }
 }

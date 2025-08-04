@@ -18,9 +18,9 @@ class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartAdapter: CartAdapter
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
@@ -30,27 +30,25 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showLoading()
         setupRecyclerView()
+        setupObservers()
         setupContinueButton()
-        updateTotalPrice()
-        hideLoading() // Данные загружаются мгновенно, поэтому можно сразу скрыть (далее асинхронно на корутины)
     }
 
     private fun setupRecyclerView() {
-        cartAdapter = CartAdapter(requireContext()) {
-            updateTotalPrice()
-            checkIfCartEmpty()
-        }
-
+        cartAdapter = CartAdapter(requireContext())
         binding.rvCart.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = cartAdapter
         }
+    }
 
-        // Загружаем данные из репозитория
-        cartAdapter.updateItems(CartRepository.cartItems)
-        checkIfCartEmpty()
+    private fun setupObservers() {
+        CartRepository.cartItemsLiveData.observe(viewLifecycleOwner) { items ->
+            cartAdapter.submitList(items)
+            updateTotalPrice()
+            checkIfCartEmpty()
+        }
     }
 
     private fun setupContinueButton() {
@@ -62,24 +60,20 @@ class CartFragment : Fragment() {
     private fun updateTotalPrice() {
         val totalPrice = CartRepository.getTotalPrice()
 
-        if (CartRepository.cartItems.isEmpty()) {
+        if (CartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
             binding.btContinueCart.text = getString(R.string.continue_cart)
         } else {
-            // Используем NumberFormat для правильного форматирования валюты
-            val format: NumberFormat = NumberFormat.getCurrencyInstance()
-            format.currency = Currency.getInstance("USD") //  получаем валюту из настроек
-            format.maximumFractionDigits = 2
-
-            val formattedPrice = format.format(totalPrice)
-
-            // Используем строку с подстановкой цены
-            binding.btContinueCart.text = getString(R.string.continue_with_price, formattedPrice)
+            val format = NumberFormat.getCurrencyInstance().apply {
+                currency = Currency.getInstance("USD")
+                maximumFractionDigits = 2
+            }
+            binding.btContinueCart.text =
+                getString(R.string.continue_with_price, format.format(totalPrice))
         }
     }
 
     private fun checkIfCartEmpty() {
-        if (CartRepository.cartItems.isEmpty()) {
-            // Показать сообщение о пустой корзине
+        if (CartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
             binding.rvCart.visibility = View.GONE
             binding.emptyCartView.visibility = View.VISIBLE
             binding.btContinueCart.isEnabled = false
@@ -88,16 +82,5 @@ class CartFragment : Fragment() {
             binding.emptyCartView.visibility = View.GONE
             binding.btContinueCart.isEnabled = true
         }
-        updateTotalPrice() // Обновляем текст кнопки
-    }
-
-    private fun showLoading() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.rvCart.visibility = View.GONE
-        binding.emptyCartView.visibility = View.GONE
-    }
-
-    private fun hideLoading() {
-        binding.progressBar.visibility = View.GONE
     }
 }

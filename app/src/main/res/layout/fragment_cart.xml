@@ -37,9 +37,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_continue_cart"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         style="@style/bt_next_StartActivity"
         android:text="@string/continue_with_price"
+        android:textSize="20sp"
         app:cornerRadius="10dp"
         app:icon="@drawable/ic_arrow_right"
         app:iconGravity="textEnd"
