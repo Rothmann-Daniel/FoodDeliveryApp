@@ -21,17 +21,17 @@ class CartAdapter(
             with(binding) {
                 imageFoodItemCart.setImageResource(item.foodItem.foodImage)
                 tvFoodItemNameCart.text = item.foodItem.foodName
-                tvFoodItemPriceCart.text = item.foodItem.foodPrice
+                tvFoodItemPriceCart.text = "$${"%.2f".format(item.foodItem.foodPrice)}"
                 tvCountCart.text = item.quantity.toString()
 
                 imBtnPlusCart.setOnClickListener {
-                    CartRepository.updateQuantity(item, item.quantity + 1)
+                    val currentItem = getItem(adapterPosition)
+                    CartRepository.updateQuantity(currentItem, currentItem.quantity + 1)
                 }
 
                 imBtnMinusCart.setOnClickListener {
-                    if (item.quantity > 1) {
-                        CartRepository.updateQuantity(item, item.quantity - 1)
-                    }
+                    val currentItem = getItem(adapterPosition)
+                    CartRepository.updateQuantity(currentItem, currentItem.quantity - 1)
                 }
 
                 imBtnTrashCart.setOnClickListener {

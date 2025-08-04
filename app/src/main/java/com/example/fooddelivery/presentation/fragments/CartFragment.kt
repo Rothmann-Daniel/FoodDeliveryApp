@@ -45,7 +45,7 @@ class CartFragment : Fragment() {
 
     private fun setupObservers() {
         CartRepository.cartItemsLiveData.observe(viewLifecycleOwner) { items ->
-            cartAdapter.submitList(items)
+            cartAdapter.submitList(items.toList()) // Явное преобразование в новый список
             updateTotalPrice()
             checkIfCartEmpty()
         }

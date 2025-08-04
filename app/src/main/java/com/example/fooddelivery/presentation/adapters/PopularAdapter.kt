@@ -23,7 +23,7 @@ class PopularAdapter(
             with(binding) {
                 imageInContainerFoodItem.setImageResource(item.foodImage)
                 tvFoodItemName.text = item.foodName
-                tvFoodItemPrice.text = item.foodPrice
+                tvFoodItemPrice.text = "$${"%.2f".format(item.foodPrice)}"
 
                 tvBtnFoodItem.setOnClickListener {
                     CartRepository.addToCart(item)

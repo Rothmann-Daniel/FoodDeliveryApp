@@ -20,7 +20,7 @@ class DetailsActivity : AppCompatActivity() {
         foodItem = PopularModel(
             foodImage = intent.getIntExtra("foodImage", 0),
             foodName = intent.getStringExtra("foodName") ?: "",
-            foodPrice = intent.getStringExtra("foodPrice") ?: "",
+            foodPrice = intent.getDoubleExtra("foodPrice", 0.0),  // Изменено на getDoubleExtra
             foodDescription = intent.getStringExtra("foodDescription") ?: "",
             foodIngredients = intent.getStringExtra("foodIngredients") ?: ""
         )
@@ -30,7 +30,7 @@ class DetailsActivity : AppCompatActivity() {
         binding.imageFoodDetails.setImageResource(foodItem.foodImage)
         binding.tvShortDescriptionText.text = foodItem.foodDescription
         binding.tvIngredientsText.text = foodItem.foodIngredients
-        binding.tvFoodPrice.text = foodItem.foodPrice
+        binding.tvFoodPrice.text = "$${"%.2f".format(foodItem.foodPrice)}"
 
         // Обработка кнопки "Добавить в корзину"
         binding.btnAddToCartBM.setOnClickListener {

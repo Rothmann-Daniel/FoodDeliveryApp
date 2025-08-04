@@ -4,5 +4,7 @@ import com.example.fooddelivery.data.models.PopularModel
 
 data class CartItem(
     val foodItem: PopularModel,
-    var quantity: Int = 1
-)
+    val quantity: Int = 1
+) {
+    fun withQuantity(newQuantity: Int): CartItem = this.copy(quantity = newQuantity)
+}

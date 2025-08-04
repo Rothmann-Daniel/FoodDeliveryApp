@@ -15,9 +15,11 @@ object CartRepository {
     }
 
     fun addToCart(item: PopularModel) {
-        val existingItem = _cartItems.find { it.foodItem.foodName == item.foodName }
-        if (existingItem != null) {
-            existingItem.quantity++
+        val existingItemIndex = _cartItems.indexOfFirst { it.foodItem.foodName == item.foodName }
+        if (existingItemIndex != -1) {
+            // Вместо изменения существующего элемента, создаем новый с увеличенным quantity
+            val existingItem = _cartItems[existingItemIndex]
+            _cartItems[existingItemIndex] = existingItem.copy(quantity = existingItem.quantity + 1)
         } else {
             _cartItems.add(CartItem(item))
         }
@@ -30,12 +32,15 @@ object CartRepository {
     }
 
     fun updateQuantity(item: CartItem, newQuantity: Int) {
-        if (newQuantity > 0) {
-            item.quantity = newQuantity
-        } else {
-            _cartItems.remove(item)
+        val index = _cartItems.indexOfFirst { it.foodItem.foodName == item.foodItem.foodName }
+        if (index != -1) {
+            if (newQuantity > 0) {
+                _cartItems[index] = item.copy(quantity = newQuantity)
+            } else {
+                _cartItems.removeAt(index)
+            }
+            updateLiveData()
         }
-        updateLiveData()
     }
 
     fun clearCart() {
@@ -44,13 +49,10 @@ object CartRepository {
     }
 
     fun getTotalPrice(): Double {
-        return _cartItems.sumOf { item ->
-            val price = item.foodItem.foodPrice.replace("[^0-9.]".toRegex(), "").toDoubleOrNull() ?: 0.0
-            price * item.quantity
-        }
+        return _cartItems.sumOf { it.foodItem.foodPrice * it.quantity }
     }
 
     private fun updateLiveData() {
-        _cartItemsLiveData.postValue(_cartItems.toList())
+        _cartItemsLiveData.value = _cartItems.toList()
     }
 }
