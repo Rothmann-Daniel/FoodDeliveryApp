@@ -97,6 +97,7 @@
     <string name="check_address">Сheck or change the address in the order</string>
     <string name="check_phone">Сheck or change the phone in the order</string>
     <string name="submit_order">Submit Order</string>
+    <string name="thank_you">Thank you for your order!</string>
 
     <!-- Profile -->
     <string name="name">Name</string>
@@ -105,5 +106,6 @@
 
     <!-- Other -->
     <string name="next">Next</string>
+
 
 </resources>

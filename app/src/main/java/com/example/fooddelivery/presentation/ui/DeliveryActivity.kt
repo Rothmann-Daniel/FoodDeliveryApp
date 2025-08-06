@@ -1,5 +1,6 @@
 package com.example.fooddelivery.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fooddelivery.databinding.ActivityDeliveryBinding
@@ -82,22 +83,12 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun showOrderConfirmation(amount: Double, paymentMethod: String) {
-        val formattedAmount = NumberFormat.getCurrencyInstance().apply {
-            currency = Currency.getInstance("USD")
-            maximumFractionDigits = 2
-        }.format(amount)
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Order Confirmed!")
-            .setMessage("""
-                Total: $formattedAmount
-                Payment: $paymentMethod
-                Your order will be delivered soon!
-            """.trimIndent())
-            .setPositiveButton("OK") { _, _ ->
-                finish()
-            }
-            .show()
+        val intent = Intent(this, ThankYouActivity::class.java).apply {
+            putExtra("AMOUNT", amount)
+            putExtra("PAYMENT_METHOD", paymentMethod)
+        }
+        startActivity(intent)
+        finish()
     }
 
     private fun updateTotalAmount(amount: Double) {
