@@ -83,7 +83,7 @@
 
     <!-- Cart -->
     <string name="continue_cart">Continue</string>
-    <string name="continue_with_price">Continue with price (%1$s)</string>
+    <string name="continue_with_price">Continue with price %1$s</string>
     <string name="design_price">$ 10,00</string>
     <string name="empty_cart">Your shopping cart is empty</string>
     <string name="item_added_to_cart">%s added to cart</string>
@@ -92,8 +92,20 @@
     <string name="delivery_time">Delivery time</string>
     <string name="delivery_fee">Delivery fee</string>
     <string name="delivery_address">Delivery address</string>
+    <string name="order_information">Order Information</string>
+    <string name="check_name">Сheck or change the name in the order</string>
+    <string name="check_address">Сheck or change the address in the order</string>
+    <string name="check_phone">Сheck or change the phone in the order</string>
+    <string name="submit_order">Submit Order</string>
+    <string name="thank_you">Thank you for your order!</string>
+
+    <!-- Profile -->
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
 
     <!-- Other -->
     <string name="next">Next</string>
+
 
 </resources>
