@@ -8,7 +8,10 @@ import com.example.fooddelivery.domain.model.CartItem
 object CartRepository {
     private val _cartItems = mutableListOf<CartItem>()
     private val _cartItemsLiveData = MutableLiveData<List<CartItem>>()
+
+    private val _totalPriceLiveData = MutableLiveData<Double>(0.0) // Добавляем LiveData для суммы
     val cartItemsLiveData: LiveData<List<CartItem>> get() = _cartItemsLiveData
+    val totalPriceLiveData: LiveData<Double> get() = _totalPriceLiveData // Публичное свойство
 
     init {
         _cartItemsLiveData.value = _cartItems.toList()
@@ -54,5 +57,6 @@ object CartRepository {
 
     private fun updateLiveData() {
         _cartItemsLiveData.value = _cartItems.toList()
+        _totalPriceLiveData.value = getTotalPrice() // Обновляем сумму при каждом изменении
     }
 }

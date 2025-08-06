@@ -1,22 +1,26 @@
 package com.example.fooddelivery.presentation.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.FragmentCartBinding
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.presentation.adapters.CartAdapter
+import com.example.fooddelivery.presentation.ui.DeliveryActivity
+import com.example.fooddelivery.presentation.ui.SharedViewModel
 import java.text.NumberFormat
 import java.util.Currency
-
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartAdapter: CartAdapter
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +49,7 @@ class CartFragment : Fragment() {
 
     private fun setupObservers() {
         CartRepository.cartItemsLiveData.observe(viewLifecycleOwner) { items ->
-            cartAdapter.submitList(items.toList()) // Явное преобразование в новый список
+            cartAdapter.submitList(items.toList())
             updateTotalPrice()
             checkIfCartEmpty()
         }
@@ -80,7 +84,11 @@ class CartFragment : Fragment() {
 
     private fun setupContinueButton() {
         binding.btContinueCart.setOnClickListener {
-            // Обработка перехода к оформлению заказа
+            val totalPrice = CartRepository.getTotalPrice()
+            val intent = Intent(requireContext(), DeliveryActivity::class.java).apply {
+                putExtra("TOTAL_AMOUNT", totalPrice) // Передаём сумму через Intent
+            }
+            startActivity(intent)
         }
     }
 }
