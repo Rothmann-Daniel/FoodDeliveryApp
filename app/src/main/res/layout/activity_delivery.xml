@@ -41,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/name"
+        android:hint="@string/check_name"
         app:endIconMode="clear_text"
         app:endIconTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +54,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:text="@string/check_name"
+            android:fontFamily="@font/yeonsung"
+            android:text="@string/name"
             android:textColor="@color/blue" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +65,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="@string/address"
+        android:hint="@string/check_address"
         app:endIconMode="clear_text"
         app:endIconTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +78,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPostalAddress"
             android:maxLines="2"
-            android:text="@string/check_address"
+            android:fontFamily="@font/yeonsung"
+            android:text="@string/address"
             android:textColor="@color/blue" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,7 +89,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="@string/phone"
+        android:hint="@string/check_phone"
         app:endIconMode="clear_text"
         app:endIconTint="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +102,8 @@
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:maxLines="1"
-            android:text="@string/check_phone"
+            android:fontFamily="@font/yeonsung"
+            android:text="@string/phone"
             android:textColor="@color/blue" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +155,10 @@
                     android:textAlignment="center"
                     app:chipEndPadding="8dp"
                     app:chipStartPadding="8dp"
-                    app:chipIcon="@drawable/ic_cash"/>
+                    app:chipIcon="@drawable/ic_cash"
+                    app:chipIconVisible="true"
+                    app:chipIconSize="24dp"
+                    app:chipCornerRadius="8dp"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_card"
@@ -168,7 +174,10 @@
                     android:textAlignment="center"
                     app:chipEndPadding="8dp"
                     app:chipIcon="@drawable/ic_credit_card"
-                    app:chipStartPadding="8dp" />
+                    app:chipStartPadding="8dp"
+                    app:chipIconVisible="true"
+                    app:chipIconSize="24dp"
+                    app:chipCornerRadius="8dp"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_online"
@@ -180,7 +189,10 @@
                     android:fontFamily="@font/yeonsung"
                     android:text="Pay Coin"
                     android:textAlignment="center"
-                    app:chipIcon="@drawable/ic_coin_payment"/>
+                    app:chipIcon="@drawable/ic_coin_payment"
+                    app:chipIconVisible="true"
+                    app:chipIconSize="24dp"
+                    app:chipCornerRadius="8dp"/>
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -238,7 +250,6 @@
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_card" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
