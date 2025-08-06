@@ -6,21 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.FragmentCartBinding
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.presentation.adapters.CartAdapter
 import com.example.fooddelivery.presentation.ui.DeliveryActivity
-import com.example.fooddelivery.presentation.ui.SharedViewModel
 import java.text.NumberFormat
 import java.util.Currency
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartAdapter: CartAdapter
-    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,38 +54,28 @@ class CartFragment : Fragment() {
 
     private fun updateTotalPrice() {
         val totalPrice = CartRepository.getTotalPrice()
+        val format = NumberFormat.getCurrencyInstance().apply {
+            currency = Currency.getInstance("USD")
+            maximumFractionDigits = 2
+        }
 
-        if (CartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
-            binding.btContinueCart.text = getString(R.string.continue_cart)
+        binding.btContinueCart.text = if (CartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
+            getString(R.string.continue_cart)
         } else {
-            val format = NumberFormat.getCurrencyInstance().apply {
-                currency = Currency.getInstance("USD")
-                maximumFractionDigits = 2
-            }
-            binding.btContinueCart.text =
-                getString(R.string.continue_with_price, format.format(totalPrice))
+            getString(R.string.continue_with_price, format.format(totalPrice))
         }
     }
 
     private fun checkIfCartEmpty() {
-        if (CartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
-            binding.rvCart.visibility = View.GONE
-            binding.emptyCartView.visibility = View.VISIBLE
-            binding.btContinueCart.isEnabled = false
-        } else {
-            binding.rvCart.visibility = View.VISIBLE
-            binding.emptyCartView.visibility = View.GONE
-            binding.btContinueCart.isEnabled = true
-        }
+        val isEmpty = CartRepository.cartItemsLiveData.value.isNullOrEmpty()
+        binding.rvCart.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.emptyCartView.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.btContinueCart.isEnabled = !isEmpty
     }
 
     private fun setupContinueButton() {
         binding.btContinueCart.setOnClickListener {
-            val totalPrice = CartRepository.getTotalPrice()
-            val intent = Intent(requireContext(), DeliveryActivity::class.java).apply {
-                putExtra("TOTAL_AMOUNT", totalPrice) // Передаём сумму через Intent
-            }
-            startActivity(intent)
+            startActivity(Intent(requireContext(), DeliveryActivity::class.java))
         }
     }
 }

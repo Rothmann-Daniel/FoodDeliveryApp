@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fooddelivery.databinding.ActivityDeliveryBinding
 import com.example.fooddelivery.domain.repository.CartRepository
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.NumberFormat
 import java.util.Currency
 
@@ -15,14 +16,88 @@ class DeliveryActivity : AppCompatActivity() {
         binding = ActivityDeliveryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Получаем сумму из Intent
-        val totalAmount = intent.getDoubleExtra("TOTAL_AMOUNT", 0.0)
-        updateTotalAmount(totalAmount)
+        setupObservers()
+        setupBackButton()
+        setupSubmitButton()
+    }
 
-        // Если нужно отслеживать изменения в реальном времени:
+    private fun setupObservers() {
         CartRepository.totalPriceLiveData.observe(this) { amount ->
             updateTotalAmount(amount)
         }
+    }
+
+    private fun setupBackButton() {
+        binding.btnBackToCart.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun setupSubmitButton() {
+        binding.btnSubmit.setOnClickListener {
+            if (validateInputs()) {
+                placeOrder()
+            }
+        }
+    }
+
+    private fun validateInputs(): Boolean {
+        val name = binding.edNameDelivery.text.toString().trim()
+        val address = binding.edAddressDelivery.text.toString().trim()
+        val phone = binding.edPhoneDelivery.text.toString().trim()
+
+        return when {
+            name.isEmpty() -> {
+                binding.nameContainer.error = "Please enter your name"
+                false
+            }
+            address.isEmpty() -> {
+                binding.addressContainer.error = "Please enter your address"
+                false
+            }
+            phone.isEmpty() -> {
+                binding.phoneContainer.error = "Please enter your phone"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun placeOrder() {
+        val currentAmount = CartRepository.getTotalPrice()
+        val paymentMethod = when {
+            binding.chipCash.isChecked -> "Cash"
+            binding.chipCard.isChecked -> "Card"
+            binding.chipOnline.isChecked -> "Pay Coin"
+            else -> "Not selected"
+        }
+
+        // Здесь можно добавить логику сохранения заказа
+
+        // Очищаем корзину после успешного заказа
+        CartRepository.clearCart()
+
+        // Показываем подтверждение
+        showOrderConfirmation(currentAmount, paymentMethod)
+    }
+
+    private fun showOrderConfirmation(amount: Double, paymentMethod: String) {
+        val formattedAmount = NumberFormat.getCurrencyInstance().apply {
+            currency = Currency.getInstance("USD")
+            maximumFractionDigits = 2
+        }.format(amount)
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Order Confirmed!")
+            .setMessage("""
+                Total: $formattedAmount
+                Payment: $paymentMethod
+                Your order will be delivered soon!
+            """.trimIndent())
+            .setPositiveButton("OK") { _, _ ->
+                finish()
+            }
+            .show()
     }
 
     private fun updateTotalAmount(amount: Double) {
