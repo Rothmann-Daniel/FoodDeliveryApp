@@ -113,8 +113,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_container">
@@ -123,77 +123,89 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-           >
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/yeonsung"
                 android:text="Payment Method"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_payment" />
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:layout_marginTop="8dp"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:chipSpacing="8dp">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_cash"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
                     android:checkable="true"
                     android:fontFamily="@font/yeonsung"
                     android:text="Cash"
-                    android:textAlignment="center"
-                    app:chipEndPadding="8dp"
-                    app:chipStartPadding="8dp"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:chipBackgroundColor="@color/chip_background_selector"
+                    app:chipCornerRadius="8dp"
                     app:chipIcon="@drawable/ic_cash"
-                    app:chipIconVisible="true"
-                    app:chipIconSize="24dp"
-                    app:chipCornerRadius="8dp"/>
+                    app:chipMinHeight="48dp"
+                    app:chipStartPadding="12dp"
+                    app:chipEndPadding="12dp"
+                    app:chipStrokeColor="@color/chip_stroke_selector"
+                    app:chipStrokeWidth="1dp"
+                    app:chipIconVisible="true"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_card"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
                     android:checkable="true"
                     android:fontFamily="@font/yeonsung"
-                    android:gravity="center"
-                    android:text="Card"
-                    android:textAlignment="center"
-                    app:chipEndPadding="8dp"
+                    android:text="Credit Card"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:chipBackgroundColor="@color/chip_background_selector"
+                    app:chipCornerRadius="8dp"
                     app:chipIcon="@drawable/ic_credit_card"
-                    app:chipStartPadding="8dp"
-                    app:chipIconVisible="true"
-                    app:chipIconSize="24dp"
-                    app:chipCornerRadius="8dp"/>
+                    app:chipMinHeight="48dp"
+                    app:chipStartPadding="12dp"
+                    app:chipEndPadding="12dp"
+                    app:chipStrokeColor="@color/chip_stroke_selector"
+                    app:chipStrokeWidth="1dp"
+                    app:chipIconVisible="true"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_online"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:checkable="true"
                     android:fontFamily="@font/yeonsung"
                     android:text="Pay Coin"
-                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:chipBackgroundColor="@color/chip_background_selector"
+                    app:chipCornerRadius="8dp"
                     app:chipIcon="@drawable/ic_coin_payment"
-                    app:chipIconVisible="true"
-                    app:chipIconSize="24dp"
-                    app:chipCornerRadius="8dp"/>
-            </LinearLayout>
+                    app:chipMinHeight="48dp"
+                    app:chipStartPadding="12dp"
+                    app:chipEndPadding="12dp"
+                    app:chipStrokeColor="@color/chip_stroke_selector"
+                    app:chipStrokeWidth="1dp"
+                    app:chipIconVisible="true"/>
+            </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
