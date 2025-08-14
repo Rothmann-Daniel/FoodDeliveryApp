@@ -13,7 +13,7 @@
     <!-- Основные цвета -->
     <color name="colorPrimary">@color/blue_light</color>
     <color name="colorPrimaryDark">@color/blue</color>
-    <color name="colorPrimaryLight">#81D4FA</color>
+    <color name="colorPrimaryLight">#7021AEEF</color>
 
     <!-- Дополнительные цвета -->
     <color name="gray_light">#E1E1E1</color>
