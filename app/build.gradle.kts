@@ -64,6 +64,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.android.material:material:1.12.0")
     implementation(libs.lottie)
-
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
 }

@@ -103,6 +103,10 @@
     <string name="name">Name</string>
     <string name="address">Address</string>
     <string name="phone">Phone</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Log Out</string>
+    <string name="default_name">User</string>
+    <string name="location_not_set">Location not set</string>
 
     <!-- Other -->
     <string name="next">Next</string>

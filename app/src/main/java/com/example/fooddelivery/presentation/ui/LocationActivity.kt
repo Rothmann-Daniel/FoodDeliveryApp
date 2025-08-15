@@ -12,6 +12,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivityLocationBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class LocationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLocationBinding
@@ -66,10 +69,30 @@ class LocationActivity : AppCompatActivity() {
     }
 
     fun startActivityWithLocation(location: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("location", location)
-        startActivity(intent)
-        finish()
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null) {
+            val db = Firebase.firestore
+            val userData = hashMapOf(
+                "location" to location
+            )
+
+            db.collection("users").document(currentUser.uid)
+                .update(userData as Map<String, Any>)
+                .addOnSuccessListener {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("location", location)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error saving location: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("location", location)
+            startActivity(intent)
+            finish()
+        }
     }
 
 }

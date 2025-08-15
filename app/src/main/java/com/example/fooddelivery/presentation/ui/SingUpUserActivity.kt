@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.auth.ktx.auth
@@ -186,14 +187,58 @@ class SingUpUserActivity : AppCompatActivity() {
         Firebase.auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Успешный вход
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    val user = auth.currentUser
+                    user?.let {
+                        // Проверяем, есть ли пользователь в Firestore
+                        checkUserExistsInFirestore(it.uid) { exists ->
+                            if (!exists) {
+                                // Если пользователя нет, сохраняем данные
+                                saveGoogleUserData(it)
+                            } else {
+                                startActivity(Intent(this, MainActivity::class.java))
+                                finish()
+                            }
+                        }
+                    }
                 } else {
                     Toast.makeText(this, "Firebase auth failed", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
+    private fun checkUserExistsInFirestore(uid: String, callback: (Boolean) -> Unit) {
+        Firebase.firestore.collection("users").document(uid)
+            .get()
+            .addOnSuccessListener { document ->
+                callback(document.exists())
+            }
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error checking user", e)
+                callback(false)
+            }
+    }
+
+
+    private fun saveGoogleUserData(user: FirebaseUser) {
+        val db = Firebase.firestore
+        val userData = hashMapOf<String, Any>(  // Явно указываем типы
+            "name" to (user.displayName ?: "User"),
+            "email" to (user.email ?: ""),
+            "createdAt" to FieldValue.serverTimestamp()
+        )
+
+        db.collection("users").document(user.uid)
+            .set(userData)
+            .addOnSuccessListener {
+                startActivity(Intent(this, LocationActivity::class.java))
+                finish()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error saving user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Firestore", "Error saving user data", e)
+            }
+    }
 }
+
 
 

@@ -6,6 +6,7 @@
     <color name="blue">#1E7AC5</color>
     <color name="blue_light">#9A1E7AC5</color>
     <color name="grey">#AEAFB4</color>
+    <color name="light_grey">#F5F5F5</color>
     <color name="red_startActivity">#92000A</color>
     <color name="btn_next_startActivity">#6F92000A</color>
     <color name="btn_back_home">#FEAD1D</color>
