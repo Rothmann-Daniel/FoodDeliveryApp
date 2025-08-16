@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.ProfileFragment"
-    android:background="@drawable/back_profile"
+    android:background="@drawable/background_profile"
     android:alpha="0.9">
 
     <com.google.android.material.card.MaterialCardView
