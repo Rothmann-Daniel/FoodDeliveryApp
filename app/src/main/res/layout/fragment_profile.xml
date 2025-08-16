@@ -4,9 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.ProfileFragment"
-    android:background="@drawable/background_profile"
-    android:alpha="0.9">
+    tools:context=".presentation.fragments.ProfileFragment">
+
+    <ImageView
+        android:id="@+id/im_background_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:backgroundTint="#2B2D30"
+        android:scaleType="fitXY"
+        android:src="@drawable/background_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_profile"
