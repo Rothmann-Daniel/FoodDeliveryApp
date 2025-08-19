@@ -143,6 +143,9 @@ class SingUpUserActivity : AppCompatActivity() {
         val user = hashMapOf(
             "name" to name,
             "email" to email,
+            "address" to "",  // <- Новое поле
+            "phone" to "",    // <- Новое поле
+            "location" to "",  // из LocationActivity
             "createdAt" to FieldValue.serverTimestamp()
         )
 
@@ -224,6 +227,9 @@ class SingUpUserActivity : AppCompatActivity() {
         val userData = hashMapOf<String, Any>(  // Явно указываем типы
             "name" to (user.displayName ?: "User"),
             "email" to (user.email ?: ""),
+            "address" to "",  // <- Новое поле
+            "phone" to "",    // <- Новое поле
+            "location" to "",
             "createdAt" to FieldValue.serverTimestamp()
         )
 
