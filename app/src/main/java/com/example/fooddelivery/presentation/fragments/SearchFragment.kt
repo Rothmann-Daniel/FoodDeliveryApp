@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.data.repository.FoodRepository
 import com.example.fooddelivery.databinding.FragmentSearchBinding
 import com.example.fooddelivery.presentation.adapters.PopularAdapter

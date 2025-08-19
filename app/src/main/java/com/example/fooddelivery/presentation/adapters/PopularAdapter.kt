@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddelivery.R
 import com.example.fooddelivery.presentation.ui.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.domain.utils.toPriceString
 

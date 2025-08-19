@@ -2,7 +2,7 @@ package com.example.fooddelivery.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.domain.model.CartItem
 
 object CartRepository {

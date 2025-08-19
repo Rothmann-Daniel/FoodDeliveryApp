@@ -1,4 +1,4 @@
-package com.example.fooddelivery.data.models
+package com.example.fooddelivery.data.model
 
 data class PopularModel(
     val foodImage: Int,          // Изображение (ресурс)

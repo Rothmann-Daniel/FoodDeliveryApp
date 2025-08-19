@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fooddelivery.R
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.databinding.ActivityDetailsBinding
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.domain.utils.toPriceString

@@ -1,4 +1,4 @@
-package com.example.fooddelivery.domain.model
+package com.example.fooddelivery.data.model
 
 data class User(
     val uid: String = "",
