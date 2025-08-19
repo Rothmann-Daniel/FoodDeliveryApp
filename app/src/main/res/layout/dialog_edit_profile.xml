@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true">
@@ -123,6 +124,31 @@
                 android:textColor="@color/blue" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/location_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/yeonsung"
+            android:hint="@string/choose_location"
+            app:hintTextColor="@color/blue"
+            android:textColor="@color/blue"
+            app:layout_constraintEnd_toEndOf="@+id/phone_container"
+            app:layout_constraintStart_toStartOf="@+id/phone_container"
+            app:layout_constraintTop_toBottomOf="@+id/phone_container"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CustomOutlineBox">
+
+            <!-- Важно: отключаем ввод с клавиатуры -->
+            <AutoCompleteTextView
+                android:id="@+id/dropdownEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/yeonsung"
+                android:inputType="none"
+                android:popupBackground="@color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
         <!-- Info Text for Email Change -->
         <TextView
             android:id="@+id/tv_email_change_info"

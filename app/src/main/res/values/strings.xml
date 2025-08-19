@@ -139,6 +139,8 @@
     <string name="check_address_profile">Сheck or change the address</string>
     <string name="check_phone_profile">Сheck or change the phone</string>
     <string name="check_email_profile">Сheck or change the email</string>
+    <string name="check_location_profile">Сheck or change the location</string>
+
 
     <!-- Other -->
     <string name="next">Next</string>

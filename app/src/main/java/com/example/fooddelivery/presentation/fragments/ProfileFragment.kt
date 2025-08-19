@@ -8,6 +8,8 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -39,6 +41,7 @@ class ProfileFragment : Fragment() {
     private var pendingEmail: String = ""
     private var pendingAddress: String = ""
     private var pendingPhone: String = ""
+    private var pendingLocation: String = ""
 
     companion object {
         private const val PREFS_NAME = "app_prefs"
@@ -107,7 +110,6 @@ class ProfileFragment : Fragment() {
             tvProfilePhone.text = document.getString("phone") ?: getString(R.string.phone_not_set)
         }
     }
-
     private fun setDefaultProfileValues() {
         val currentUser = auth.currentUser ?: return
         with(binding) {
@@ -143,6 +145,18 @@ class ProfileFragment : Fragment() {
 
         val emailEditText = dialogView.findViewById<TextInputEditText>(R.id.ed_email)
         val emailInfoText = dialogView.findViewById<TextView>(R.id.tv_email_change_info)
+        val locationSpinner = dialogView.findViewById<AutoCompleteTextView>(R.id.dropdownEditText)
+
+        // Заполняем спиннер локациями
+        val locations = resources.getStringArray(R.array.locations)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.dropdown_item,
+            R.id.text1,
+            locations
+        )
+        locationSpinner.setAdapter(adapter)
+
 
         // Устанавливаем текущие значения
         with(dialogView) {
@@ -150,6 +164,12 @@ class ProfileFragment : Fragment() {
             findViewById<TextInputEditText>(R.id.ed_email).setText(binding.tvProfileEmail.text)
             findViewById<TextInputEditText>(R.id.ed_address).setText(binding.tvProfileAddress.text)
             findViewById<TextInputEditText>(R.id.ed_phone).setText(binding.tvProfilePhone.text)
+
+            // Устанавливаем текущую локацию
+            val currentLocation = binding.tvProfileLocation.text.toString()
+            if (currentLocation != getString(R.string.location_not_set)) {
+                locationSpinner.setText(currentLocation, false)
+            }
         }
 
         // Слушатель для отображения предупреждения при изменении email
@@ -176,21 +196,24 @@ class ProfileFragment : Fragment() {
         val email = dialogView.findViewById<TextInputEditText>(R.id.ed_email).text.toString().trim()
         val address = dialogView.findViewById<TextInputEditText>(R.id.ed_address).text.toString().trim()
         val phone = dialogView.findViewById<TextInputEditText>(R.id.ed_phone).text.toString().trim()
+        val location = dialogView.findViewById<AutoCompleteTextView>(R.id.dropdownEditText).text.toString().trim()
 
         when {
             name.isEmpty() -> showToast("Введите имя")
             !isValidEmail(email) -> showToast("Некорректный email")
+            location.isEmpty() -> showToast("Выберите локацию")
             else -> {
                 // Сохраняем данные для последующего использования
                 pendingName = name
                 pendingEmail = email
                 pendingAddress = address
                 pendingPhone = phone
+                pendingLocation = location // Добавляем локацию
 
                 if (emailChanged(email)) {
                     showPasswordDialog()
                 } else {
-                    updateProfileData(name, email, address, phone)
+                    updateProfileData(name, email, address, phone, location)
                 }
             }
         }
@@ -295,8 +318,8 @@ class ProfileFragment : Fragment() {
                             }
                         }
 
-                    // Обновляем данные в Firestore
-                    updateProfileData(pendingName, pendingEmail, pendingAddress, pendingPhone)
+                    // Обновляем данные в Firestore (включая локацию)
+                    updateProfileData(pendingName, pendingEmail, pendingAddress, pendingPhone, pendingLocation)
                 } else {
                     handleEmailUpdateError(task.exception)
                 }
@@ -323,14 +346,15 @@ class ProfileFragment : Fragment() {
         clearPendingData()
     }
 
-    private fun updateProfileData(name: String, email: String, address: String, phone: String) {
+    private fun updateProfileData(name: String, email: String, address: String, phone: String, location: String) {
         val user = auth.currentUser ?: return
 
         val updates = hashMapOf<String, Any>(
             "name" to name,
             "email" to email,
             "address" to address,
-            "phone" to phone
+            "phone" to phone,
+            "location" to location // Добавляем локацию
         )
 
         Firebase.firestore.collection("users")
@@ -338,7 +362,7 @@ class ProfileFragment : Fragment() {
             .update(updates)
             .addOnSuccessListener {
                 Log.d(TAG, "Profile data updated successfully")
-                updateUI(name, email, address, phone)
+                updateUI(name, email, address, phone, location) // Обновляем UI с локацией
                 showToast("Данные сохранены")
                 clearPendingData()
             }
@@ -349,12 +373,20 @@ class ProfileFragment : Fragment() {
             }
     }
 
-    private fun updateUI(name: String, email: String, address: String, phone: String) {
+    private fun updateUI(name: String, email: String, address: String, phone: String, location: String) {
         with(binding) {
             tvProfileName.text = name
             tvProfileEmail.text = email
             tvProfileAddress.text = address
             tvProfilePhone.text = phone
+            tvProfileLocation.text = location
+
+            // Показываем локацию, если она установлена
+            tvProfileLocation.visibility = if (location != getString(R.string.location_not_set)) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
     }
 
@@ -376,6 +408,10 @@ class ProfileFragment : Fragment() {
 
                     if (!document.contains("phone")) {
                         updates["phone"] = getString(R.string.phone_not_set)
+                    }
+
+                    if (!document.contains("location")) {
+                        updates["location"] = getString(R.string.location_not_set)
                     }
 
                     if (updates.isNotEmpty()) {
@@ -400,6 +436,7 @@ class ProfileFragment : Fragment() {
         pendingEmail = ""
         pendingAddress = ""
         pendingPhone = ""
+        pendingLocation = ""
         showLoading(false)
     }
 
