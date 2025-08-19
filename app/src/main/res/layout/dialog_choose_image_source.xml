@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/btn_signInSignUp.login"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:text="@string/make_foto"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:fontFamily="@font/yeonsung"
+            app:icon="@drawable/ic_camera"
+            app:iconGravity="textStart"
+            app:iconTint="@color/blue"
+            app:iconPadding="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/btn_signInSignUp.login"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:text="@string/choose_from_gallery"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:fontFamily="@font/yeonsung"
+            app:icon="@drawable/ic_gallery"
+            app:iconGravity="textStart"
+            app:iconTint="@color/blue"
+            app:iconPadding="8dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

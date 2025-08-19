@@ -140,6 +140,9 @@
     <string name="check_phone_profile">Сheck or change the phone</string>
     <string name="check_email_profile">Сheck or change the email</string>
     <string name="check_location_profile">Сheck or change the location</string>
+    <string name="make_foto">Photo</string>
+    <string name="choose_from_gallery">Gallery</string>
+
 
 
     <!-- Other -->
