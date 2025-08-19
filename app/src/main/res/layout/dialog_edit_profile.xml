@@ -149,6 +149,7 @@
                 android:popupBackground="@color/white"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <!-- Info Text for Email Change -->
         <TextView
             android:id="@+id/tv_email_change_info"

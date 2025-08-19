@@ -65,5 +65,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation(libs.lottie)
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
 
 }
