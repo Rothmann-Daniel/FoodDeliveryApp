@@ -1,255 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".presentation.ui.DeliveryActivity">
 
-    <!-- Back button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_back_to_cart"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ic_back"
-        android:outlineAmbientShadowColor="@color/btn_next_startActivity"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <!-- title -->
-    <TextView
-        android:id="@+id/title_order_information"
-        style="@style/tv_title_SplashActivity"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/order_information"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back_to_cart" />
+        android:padding="16dp">
 
-    <!-- TextInputLayout  -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/check_name"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_order_information">
+        <!-- Back button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back_to_cart"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            android:outlineAmbientShadowColor="@color/btn_next_startActivity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_name_delivery"
-            android:layout_width="match_parent"
+        <!-- title -->
+        <TextView
+            android:id="@+id/title_order_information"
+            style="@style/tv_title_SplashActivity"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:maxLines="1"
-            android:fontFamily="@font/yeonsung"
-            android:text="@string/name"
-            android:textColor="@color/blue" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/order_information"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_back_to_cart" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/address_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="@string/check_address"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_container">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_address_delivery"
-            android:layout_width="match_parent"
+        <!-- TextInputLayout  -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
-            android:maxLines="2"
-            android:fontFamily="@font/yeonsung"
-            android:text="@string/address"
-            android:textColor="@color/blue" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="8dp"
+            android:hint="@string/check_name"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_order_information">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phone_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="@string/check_phone"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_container">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_phone_delivery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:maxLines="1"
-            android:fontFamily="@font/yeonsung"
-            android:text="@string/phone"
-            android:textColor="@color/blue" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Payment Method Section -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/payment_card"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone_container">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-           >
-
-            <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_name_delivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/yeonsung"
-                android:text="Payment Method"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:text="@string/name"
+                android:textColor="@color/blue" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/address_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/check_address"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_address_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/yeonsung"
+                android:inputType="textPostalAddress"
+                android:maxLines="2"
+                android:text="@string/address"
+                android:textColor="@color/blue" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/check_phone"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_phone_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/yeonsung"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:text="@string/phone"
+                android:textColor="@color/blue" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_info_courier"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/add_info_courier"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_container">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_add_info_courier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/yeonsung"
+                android:inputType="text"
+                android:maxLines="1"
+                android:text="@string/add_info"
+                android:textColor="@color/blue" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Payment Method Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/payment_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_info_courier">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_cash"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:checkable="true"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_payment"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/colorPrimaryDark"
                     android:fontFamily="@font/yeonsung"
-                    android:text="Cash"
-                    android:textAlignment="center"
-                    app:chipEndPadding="8dp"
-                    app:chipStartPadding="8dp"
-                    app:chipIcon="@drawable/ic_cash"
-                    app:chipIconVisible="true"
-                    app:chipIconSize="24dp"
-                    app:chipCornerRadius="8dp"/>
+                    android:letterSpacing="0.02"
+                    android:text="Payment Method"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_card"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="0dp"
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:checkable="true"
-                    android:fontFamily="@font/yeonsung"
-                    android:gravity="center"
-                    android:text="Card"
-                    android:textAlignment="center"
-                    app:chipEndPadding="8dp"
-                    app:chipIcon="@drawable/ic_credit_card"
-                    app:chipStartPadding="8dp"
-                    app:chipIconVisible="true"
-                    app:chipIconSize="24dp"
-                    app:chipCornerRadius="8dp"/>
+                    android:layout_marginTop="8dp"
+                    app:chipSpacing="8dp"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_online"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checkable="true"
-                    android:fontFamily="@font/yeonsung"
-                    android:text="Pay Coin"
-                    android:textAlignment="center"
-                    app:chipIcon="@drawable/ic_coin_payment"
-                    app:chipIconVisible="true"
-                    app:chipIconSize="24dp"
-                    app:chipCornerRadius="8dp"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_cash"
+                        style="@style/ChipPayment"
+                        android:text="Cash"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:chipIcon="@drawable/ic_cash"
+                        app:chipIconVisible="true"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_card"
+                        style="@style/ChipPayment"
+                        android:text="Credit Card"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:chipIcon="@drawable/ic_credit_card"
+                        app:chipIconVisible="true"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_online"
+                        style="@style/ChipPayment"
+                        android:text="Pay Coin"
+                        app:chipBackgroundColor="@color/chip_background_selector"
+                        app:chipIcon="@drawable/ic_coin_payment"
+                        app:chipIconVisible="true"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+                </com.google.android.material.chip.ChipGroup>
             </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-    <!-- Total Amount Section -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/total_card"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_card">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Total Amount Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/total_card"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/payment_card">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/yeonsung"
-                android:text="Total Amount:"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_total_amount"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="$0.00"
-                android:textColor="@color/blue"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-    <!-- Submit button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_submit"
-        style="@style/bt_next_StartActivity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/submit_order"
-        app:cornerRadius="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/yeonsung"
+                    android:text="Total Amount:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_total_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/yeonsung"
+                    android:gravity="end"
+                    android:text="$0.00"
+                    android:textColor="@color/blue"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Submit button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_submit"
+            style="@style/bt_next_StartActivity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/submit_order"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/total_card" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

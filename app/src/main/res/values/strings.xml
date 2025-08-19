@@ -96,6 +96,7 @@
     <string name="check_name">Сheck or change the name in the order</string>
     <string name="check_address">Сheck or change the address in the order</string>
     <string name="check_phone">Сheck or change the phone in the order</string>
+    <string name="add_info_courier">Add information for the courier if necessary</string>
     <string name="submit_order">Submit Order</string>
     <string name="thank_you">Thank you for your order!</string>
 
@@ -103,9 +104,50 @@
     <string name="name">Name</string>
     <string name="address">Address</string>
     <string name="phone">Phone</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Log Out</string>
+    <string name="default_name">User</string>
+    <string name="location_not_set">Location not set</string>
+    <string name="address_not_set">The address is not specified</string>
+    <string name="phone_not_set">Phone number is not specified</string>
+
+    <!-- Edit Profile -->
+    <string name="confirm_password_title">Confirm your password</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="save">Save</string>
+    <string name="email">Email</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="data_saved">Data saved</string>
+    <string name="save_error">Error saving data</string>
+    <string name="email_update_error">Error updating email</string>
+    <string name="profile_load_error">Error loading profile</string>
+    <string name="email_change_warning">Changing email requires password confirmation</string>
+    <string name="password_too_short">Password is too short</string>
+    <string name="email_already_used">This email is already in use</string>
+    <string name="reauth_required">Reauthentication is required</string>
+    <string name="verification_email_sent">Verification email sent</string>
+    <string name="email_updated_successfully">Email updated successfully</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="email_already_in_use">Email is already in use</string>
+    <string name="reauthentication_required">Reauthentication is required</string>
+    <string name="email_update_failed">Email update failed</string>
+    <string name="check_name_profile">Сheck or change the name</string>
+    <string name="check_address_profile">Сheck or change the address</string>
+    <string name="check_phone_profile">Сheck or change the phone</string>
+    <string name="check_email_profile">Сheck or change the email</string>
+    <string name="check_location_profile">Сheck or change the location</string>
+    <string name="make_foto">Photo</string>
+    <string name="choose_from_gallery">Gallery</string>
+
+
 
     <!-- Other -->
     <string name="next">Next</string>
+    <string name="add_info">Add Information</string>
 
 
 </resources>
