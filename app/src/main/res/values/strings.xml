@@ -108,8 +108,8 @@
     <string name="logout">Log Out</string>
     <string name="default_name">User</string>
     <string name="location_not_set">Location not set</string>
-    <string name="address_not_set">Адрес не указан</string>
-    <string name="phone_not_set">Телефон не указан</string>
+    <string name="address_not_set">The address is not specified</string>
+    <string name="phone_not_set">Phone number is not specified</string>
 
     <!-- Other -->
     <string name="next">Next</string>

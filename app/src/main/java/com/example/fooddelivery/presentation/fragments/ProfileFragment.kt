@@ -63,24 +63,42 @@ class ProfileFragment : Fragment() {
                     binding.tvProfileName.text = document.getString("name") ?: getString(R.string.default_name)
 
                     // Локация
-                    val location = document.getString("location") ?: getString(R.string.location_not_set)
+                    val location = document.getString("location").takeIf { !it.isNullOrEmpty() }
+                        ?: getString(R.string.location_not_set)
                     binding.tvProfileLocation.apply {
                         text = location
                         visibility = if (location == getString(R.string.location_not_set)) View.GONE else View.VISIBLE
                     }
 
-                    // Адрес
-                    binding.tvProfileAddress.text = document.getString("address") ?: getString(R.string.address_not_set)
+                    // Адрес - проверяем на пустоту
+                    val address = document.getString("address").takeIf { !it.isNullOrEmpty() }
+                        ?: getString(R.string.address_not_set)
+                    binding.tvProfileAddress.apply {
+                        text = address
+                        // Показываем только если есть адрес или заглушка
+                        visibility = if (address == getString(R.string.address_not_set)) View.VISIBLE else View.VISIBLE
+                    }
 
-                    // Телефон
-                    binding.tvProfilePhone.text = document.getString("phone") ?: getString(R.string.phone_not_set)
+                    // Телефон - аналогично
+                    val phone = document.getString("phone").takeIf { !it.isNullOrEmpty() }
+                        ?: getString(R.string.phone_not_set)
+                    binding.tvProfilePhone.apply {
+                        text = phone
+                        visibility = View.VISIBLE
+                    }
                 }
             }
             .addOnFailureListener {
+                // Обработка ошибок с заглушками
                 binding.tvProfileName.text = currentUser.displayName ?: getString(R.string.default_name)
                 binding.tvProfileLocation.text = getString(R.string.location_not_set)
                 binding.tvProfileAddress.text = getString(R.string.address_not_set)
                 binding.tvProfilePhone.text = getString(R.string.phone_not_set)
+
+                // Показываем все поля даже при ошибке
+                binding.tvProfileLocation.visibility = View.VISIBLE
+                binding.tvProfileAddress.visibility = View.VISIBLE
+                binding.tvProfilePhone.visibility = View.VISIBLE
             }
     }
 
