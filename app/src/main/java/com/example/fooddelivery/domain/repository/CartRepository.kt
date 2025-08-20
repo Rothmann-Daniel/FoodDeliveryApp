@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.domain.model.CartItem
+import javax.inject.Singleton
 
-object CartRepository {
+
+@Singleton
+class CartRepository {
     private val _cartItems = mutableListOf<CartItem>()
     private val _cartItemsLiveData = MutableLiveData<List<CartItem>>()
 

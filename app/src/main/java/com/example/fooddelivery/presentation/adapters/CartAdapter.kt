@@ -1,5 +1,6 @@
 package com.example.fooddelivery.presentation.adapters
 
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,10 +11,14 @@ import com.example.fooddelivery.databinding.CartAddItemBinding
 import com.example.fooddelivery.domain.model.CartItem
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.domain.utils.toPriceString
+import org.koin.java.KoinJavaComponent.inject
 
 class CartAdapter(
     private val context: Context
 ) : ListAdapter<CartItem, CartAdapter.CartViewHolder>(CartItemDiffCallback()) {
+
+    // Инжектим CartRepository через Koin
+    private val cartRepository: CartRepository by inject(CartRepository::class.java)
 
     inner class CartViewHolder(private val binding: CartAddItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -27,16 +32,20 @@ class CartAdapter(
 
                 imBtnPlusCart.setOnClickListener {
                     val currentItem = getItem(bindingAdapterPosition)
-                    CartRepository.updateQuantity(currentItem, currentItem.quantity + 1)
+                    cartRepository.updateQuantity(currentItem, currentItem.quantity + 1)
                 }
 
                 imBtnMinusCart.setOnClickListener {
                     val currentItem = getItem(bindingAdapterPosition)
-                    CartRepository.updateQuantity(currentItem, currentItem.quantity - 1)
+                    if (currentItem.quantity > 1) {
+                        cartRepository.updateQuantity(currentItem, currentItem.quantity - 1)
+                    } else {
+                        cartRepository.removeFromCart(currentItem)
+                    }
                 }
 
                 imBtnTrashCart.setOnClickListener {
-                    CartRepository.removeFromCart(item)
+                    cartRepository.removeFromCart(item)
                 }
             }
         }

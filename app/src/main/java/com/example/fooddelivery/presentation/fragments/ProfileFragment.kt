@@ -32,6 +32,7 @@ import com.example.fooddelivery.databinding.DialogPasswordBinding
 import com.example.fooddelivery.databinding.FragmentProfileBinding
 import com.example.fooddelivery.domain.utils.EmailUtils
 import com.example.fooddelivery.presentation.ui.LoginUserActivity
+import com.example.fooddelivery.presentation.ui.ProfileDialogHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -470,50 +471,21 @@ class ProfileFragment : Fragment() {
 
     // region [7. Редактирование профиля]
     private fun showEditProfileDialog() {
-        val dialogView = LayoutInflater.from(requireContext())
-            .inflate(R.layout.dialog_edit_profile, null)
-
-        val emailEditText = dialogView.findViewById<TextInputEditText>(R.id.ed_email)
-        val emailInfoText = dialogView.findViewById<TextView>(R.id.tv_email_change_info)
-        val locationSpinner = dialogView.findViewById<AutoCompleteTextView>(R.id.dropdownEditText)
-
-        val locations = resources.getStringArray(R.array.locations)
-        val adapter = ArrayAdapter(
+        val dialog = ProfileDialogHelper.showEditProfileDialog(
             requireContext(),
-            R.layout.dropdown_item,
-            R.id.text1,
-            locations
+            userRepository,
+            object : ProfileDialogHelper.ProfileUpdateCallback {
+                override fun onProfileUpdated() {
+                    loadUserData()
+                    showToast("Данные сохранены")
+                }
+
+                override fun onError(message: String) {
+                    showToast(message)
+                }
+            }
         )
-        locationSpinner.setAdapter(adapter)
-
-        // Заполняем текущими данными из репозитория
-        userRepository.currentUser.value?.let { user ->
-            dialogView.findViewById<TextInputEditText>(R.id.ed_name).setText(user.name)
-            dialogView.findViewById<TextInputEditText>(R.id.ed_email).setText(user.email)
-            dialogView.findViewById<TextInputEditText>(R.id.ed_address).setText(user.address)
-            dialogView.findViewById<TextInputEditText>(R.id.ed_phone).setText(user.phone)
-
-            if (user.location != getString(R.string.location_not_set)) {
-                locationSpinner.setText(user.location, false)
-            }
-        }
-
-        emailEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                val newEmail = emailEditText.text.toString().trim()
-                val currentEmail = auth.currentUser?.email ?: ""
-                emailInfoText.visibility = if (newEmail != currentEmail) View.VISIBLE else View.GONE
-            }
-        }
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.edit_profile_title))
-            .setView(dialogView)
-            .setPositiveButton(getString(R.string.save)) { _, _ ->
-                validateAndSaveProfileChanges(dialogView)
-            }
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show()
+        dialog.show()
     }
 
     private fun validateAndSaveProfileChanges(dialogView: View) {
