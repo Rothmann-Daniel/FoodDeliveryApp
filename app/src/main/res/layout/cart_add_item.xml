@@ -42,11 +42,12 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/food_name"
+            android:gravity="center"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_food_item_price_Cart"
             app:layout_constraintEnd_toStartOf="@id/controls_layout"
             app:layout_constraintStart_toEndOf="@id/food_item_Cart"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/food_item_Cart"
+            tools:text="Chicken Wings BBQ" />
 
         <!-- Цена продукта -->
         <TextView
@@ -55,12 +56,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="start"
             android:text="@string/design_price"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@id/food_item_Cart"
-            app:layout_constraintEnd_toEndOf="@id/tv_food_item_name_Cart"
-            app:layout_constraintStart_toStartOf="@id/tv_food_item_name_Cart" />
-
+            app:layout_constraintBottom_toBottomOf="@+id/food_item_Cart"
+            app:layout_constraintEnd_toEndOf="@+id/tv_food_item_name_Cart"
+            app:layout_constraintStart_toStartOf="@+id/tv_food_item_name_Cart"
+            app:layout_constraintTop_toBottomOf="@id/tv_food_item_name_Cart" />
 
         <!-- Блок управления (кнопки + количество) -->
         <LinearLayout
@@ -69,9 +71,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_food_item_name_Cart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_food_item_name_Cart">
+            app:layout_constraintTop_toTopOf="@+id/food_item_Cart">
 
             <!-- Кнопка минус -->
             <ImageButton
@@ -87,10 +88,10 @@
                 android:id="@+id/tv_count_Cart"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/yeonsung"
                 android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:fontFamily="@font/yeonsung"
                 tools:text="1" />
 
             <!-- Кнопка плюс -->
@@ -108,12 +109,11 @@
             android:id="@+id/im_btn_trash_Cart"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/contentDescription_delete"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/controls_layout"
-            app:layout_constraintStart_toStartOf="@id/controls_layout"
+            app:layout_constraintEnd_toEndOf="@+id/controls_layout"
+            app:layout_constraintStart_toStartOf="@+id/controls_layout"
             app:layout_constraintTop_toBottomOf="@id/controls_layout"
             app:srcCompat="@drawable/ic_trash"
             app:tint="@android:color/holo_red_dark" />
