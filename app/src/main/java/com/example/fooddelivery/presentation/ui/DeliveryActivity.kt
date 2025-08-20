@@ -4,11 +4,14 @@ package com.example.fooddelivery.presentation.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.example.fooddelivery.databinding.ActivityDeliveryBinding
 import com.example.fooddelivery.domain.repository.CartRepository
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.NumberFormat
@@ -34,13 +37,16 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Используем инжектированный cartRepository
+        // Наблюдаем за общей суммой из корзины
         cartRepository.totalPriceLiveData.observe(this) { amount ->
             updateTotalAmount(amount)
         }
 
-        viewModel.userData.observe(this) { user ->
-            user?.let { populateUserData(it) }
+        // Наблюдаем за данными пользователя через StateFlow
+        lifecycleScope.launch {
+            viewModel.userRepository.currentUser.collect { user ->
+                user?.let { populateUserData(it) }
+            }
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
@@ -53,7 +59,6 @@ class DeliveryActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun populateUserData(user: com.example.fooddelivery.data.model.User) {
         with(binding) {
@@ -68,21 +73,30 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun setupTextWatchers() {
-        binding.edNameDelivery.addTextChangedListener { text ->
-            text?.toString()?.takeIf { it.isNotEmpty() }?.let { name ->
-                viewModel.updateUserField("name", name)
+        binding.edNameDelivery.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = binding.edNameDelivery.text.toString().trim()
+                if (text.isNotEmpty()) {
+                    viewModel.updateUserField("name", text)
+                }
             }
         }
 
-        binding.edAddressDelivery.addTextChangedListener { text ->
-            text?.toString()?.takeIf { it.isNotEmpty() }?.let { address ->
-                viewModel.updateUserField("address", address)
+        binding.edAddressDelivery.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = binding.edAddressDelivery.text.toString().trim()
+                if (text.isNotEmpty()) {
+                    viewModel.updateUserField("address", text)
+                }
             }
         }
 
-        binding.edPhoneDelivery.addTextChangedListener { text ->
-            text?.toString()?.takeIf { it.isNotEmpty() }?.let { phone ->
-                viewModel.updateUserField("phone", phone)
+        binding.edPhoneDelivery.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = binding.edPhoneDelivery.text.toString().trim()
+                if (text.isNotEmpty()) {
+                    viewModel.updateUserField("phone", text)
+                }
             }
         }
     }
@@ -93,14 +107,16 @@ class DeliveryActivity : AppCompatActivity() {
         }
     }
 
+
     private fun showEditProfileDialog() {
         val dialog = ProfileDialogHelper.showEditProfileDialog(
             this,
-            viewModel.userRepository, // Нужно добавить public метод в ViewModel
+            viewModel.userRepository,
+            this,
             object : ProfileDialogHelper.ProfileUpdateCallback {
                 override fun onProfileUpdated() {
-                    viewModel.loadUserData() // Перезагружаем данные
                     showToast("Данные сохранены")
+                    // Обновления придут автоматически через StateFlow
                 }
 
                 override fun onError(message: String) {
@@ -111,7 +127,6 @@ class DeliveryActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // Остальные методы остаются без изменений
     private fun setupBackButton() {
         binding.btnBackToCart.setOnClickListener {
             finish()
@@ -158,7 +173,6 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun placeOrder() {
-        // Используем инжектированный cartRepository
         val currentAmount = cartRepository.getTotalPrice()
         val paymentMethod = when {
             binding.chipCash.isChecked -> "Cash"
@@ -166,11 +180,6 @@ class DeliveryActivity : AppCompatActivity() {
             binding.chipOnline.isChecked -> "Pay Coin"
             else -> "Not selected"
         }
-
-        val name = binding.edNameDelivery.text.toString().trim()
-        val address = binding.edAddressDelivery.text.toString().trim()
-        val phone = binding.edPhoneDelivery.text.toString().trim()
-        val additionalInfo = binding.edAddInfoCourier.text.toString().trim()
 
         cartRepository.clearCart()
         showOrderConfirmation(currentAmount, paymentMethod)
@@ -194,6 +203,6 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun showToast(message: String) {
-        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

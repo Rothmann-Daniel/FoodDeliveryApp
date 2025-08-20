@@ -9,12 +9,7 @@ import com.example.fooddelivery.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
 
-class DeliveryViewModel(
-    private val _userRepository: UserRepository
-) : ViewModel() {
-
-    val userRepository: UserRepository
-        get() = _userRepository
+class DeliveryViewModel(val userRepository: UserRepository) : ViewModel() {
 
     private val _userData = MutableLiveData<User?>()
     val userData: LiveData<User?> = _userData
@@ -30,11 +25,11 @@ class DeliveryViewModel(
         viewModelScope.launch {
             try {
                 val user = userRepository.fetchCurrentUser()
-                _userData.value = user
+                _userData.postValue(user)
             } catch (e: Exception) {
-                _errorMessage.value = "Ошибка загрузки данных пользователя"
+                _errorMessage.postValue("Ошибка загрузки данных пользователя")
             } finally {
-                _isLoading.value = false
+                _isLoading.postValue(false)
             }
         }
     }
@@ -42,11 +37,15 @@ class DeliveryViewModel(
     fun updateUserField(field: String, value: Any) {
         viewModelScope.launch {
             try {
-                userRepository.updateUserField(field, value)
-                // Обновляем локальные данные
-                loadUserData()
+                val success = userRepository.updateUserField(field, value)
+                if (success) {
+                    // Перезагружаем данные для обновления UI
+                    loadUserData()
+                } else {
+                    _errorMessage.postValue("Ошибка обновления данных")
+                }
             } catch (e: Exception) {
-                _errorMessage.value = "Ошибка обновления данных"
+                _errorMessage.postValue("Ошибка обновления: ${e.message}")
             }
         }
     }

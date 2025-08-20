@@ -11,13 +11,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -34,8 +30,6 @@ import com.example.fooddelivery.domain.utils.EmailUtils
 import com.example.fooddelivery.presentation.ui.LoginUserActivity
 import com.example.fooddelivery.presentation.ui.ProfileDialogHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -43,13 +37,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -147,8 +141,22 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClickListeners()
+        setupObservers() // Важно: сначала настраиваем подписки
         loadUserData()
     }
+
+
+    private fun setupObservers() {
+        // Подписываемся на изменения пользователя
+        viewLifecycleOwner.lifecycleScope.launch {
+            userRepository.currentUser.collect { user ->
+                user?.let {
+                    updateUIWithUserData(it)
+                }
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -160,13 +168,10 @@ class ProfileFragment : Fragment() {
     private fun loadUserData() {
         showLoading(true)
 
-        // Запускаем в lifecycleScope для автоматического управления
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val user = userRepository.fetchCurrentUser()
-                if (user != null) {
-                    updateUIWithUserData(user)
-                } else {
+                val user = userRepository.fetchCurrentUser(forceUpdate = true)
+                if (user == null) {
                     setDefaultProfileValues()
                 }
             } catch (e: Exception) {
@@ -179,6 +184,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateUIWithUserData(user: User) {
+        // Проверяем, что Fragment все еще активен
+        if (!isAdded || view == null) return
+
         with(binding) {
             tvProfileName.text = user.name.ifEmpty { getString(R.string.default_name) }
             tvProfileEmail.text = user.email
@@ -474,10 +482,11 @@ class ProfileFragment : Fragment() {
         val dialog = ProfileDialogHelper.showEditProfileDialog(
             requireContext(),
             userRepository,
+            viewLifecycleOwner,
             object : ProfileDialogHelper.ProfileUpdateCallback {
                 override fun onProfileUpdated() {
-                    loadUserData()
                     showToast("Данные сохранены")
+                    // Не нужно вызывать loadUserData() - обновления придут автоматически через Flow
                 }
 
                 override fun onError(message: String) {
@@ -486,42 +495,6 @@ class ProfileFragment : Fragment() {
             }
         )
         dialog.show()
-    }
-
-    private fun validateAndSaveProfileChanges(dialogView: View) {
-        val name = dialogView.findViewById<TextInputEditText>(R.id.ed_name).text.toString().trim()
-        val email = dialogView.findViewById<TextInputEditText>(R.id.ed_email).text.toString().trim()
-        val address = dialogView.findViewById<TextInputEditText>(R.id.ed_address).text.toString().trim()
-        val phone = dialogView.findViewById<TextInputEditText>(R.id.ed_phone).text.toString().trim()
-        val location = dialogView.findViewById<AutoCompleteTextView>(R.id.dropdownEditText).text.toString().trim()
-
-        when {
-            name.isEmpty() -> showToast("Введите имя")
-            !isValidEmail(email) -> showToast("Некорректный email")
-            location.isEmpty() -> showToast("Выберите локацию")
-            else -> {
-                pendingName = name
-                pendingEmail = email
-                pendingAddress = address
-                pendingPhone = phone
-                pendingLocation = location
-
-                if (emailChanged(email)) {
-                    showPasswordDialog()
-                } else {
-                    updateProfileData()
-                }
-            }
-        }
-    }
-
-    private fun emailChanged(newEmail: String): Boolean {
-        val currentEmail = auth.currentUser?.email ?: return false
-        return newEmail != currentEmail
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun showPasswordDialog() {

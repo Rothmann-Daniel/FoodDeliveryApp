@@ -1,20 +1,20 @@
 package com.example.fooddelivery.data.repository
 
+
 import com.example.fooddelivery.data.model.User
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
-
 
 class UserRepository {
 
     private val _currentUser = MutableStateFlow<User?>(null)
-    val currentUser: StateFlow<User?> = _currentUser
+    val currentUser: StateFlow<User?> = _currentUser.asStateFlow()
 
-    // Убираем колбэк и используем корутины с правильными диспетчерами
     suspend fun fetchCurrentUser(forceUpdate: Boolean = false): User? {
         val firebaseUser = Firebase.auth.currentUser ?: return null
 
@@ -55,12 +55,13 @@ class UserRepository {
         val firebaseUser = Firebase.auth.currentUser ?: return false
 
         return try {
+            // Сначала обновляем в Firebase
             Firebase.firestore.collection("users")
                 .document(firebaseUser.uid)
                 .update(field, value)
                 .await()
 
-            // Обновляем локальные данные
+            // Затем обновляем локальные данные
             _currentUser.value?.let { currentUser ->
                 val updatedUser = when (field) {
                     "name" -> currentUser.copy(name = value as String)
@@ -70,6 +71,40 @@ class UserRepository {
                     "location" -> currentUser.copy(location = value as String)
                     "avatarUrl" -> currentUser.copy(avatarUrl = value as String)
                     else -> currentUser
+                }
+                // Обновляем StateFlow - это автоматически уведомит всех подписчиков
+                _currentUser.value = updatedUser
+            }
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun updateMultipleFields(updates: Map<String, Any>): Boolean {
+        val firebaseUser = Firebase.auth.currentUser ?: return false
+
+        return try {
+            // Обновляем все поля в Firebase одним запросом
+            Firebase.firestore.collection("users")
+                .document(firebaseUser.uid)
+                .update(updates)
+                .await()
+
+            // Обновляем локальные данные
+            _currentUser.value?.let { currentUser ->
+                var updatedUser = currentUser
+                updates.forEach { (field, value) ->
+                    updatedUser = when (field) {
+                        "name" -> updatedUser.copy(name = value as String)
+                        "email" -> updatedUser.copy(email = value as String)
+                        "address" -> updatedUser.copy(address = value as String)
+                        "phone" -> updatedUser.copy(phone = value as String)
+                        "location" -> updatedUser.copy(location = value as String)
+                        "avatarUrl" -> updatedUser.copy(avatarUrl = value as String)
+                        else -> updatedUser
+                    }
                 }
                 _currentUser.value = updatedUser
             }
