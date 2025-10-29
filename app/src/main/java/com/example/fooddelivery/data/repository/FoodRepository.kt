@@ -1,7 +1,7 @@
 package com.example.fooddelivery.data.repository
 
 import com.example.fooddelivery.R
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 
 object FoodRepository {
     val popularMenu = mutableListOf(

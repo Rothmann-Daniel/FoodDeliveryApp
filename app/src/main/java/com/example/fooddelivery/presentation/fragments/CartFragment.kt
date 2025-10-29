@@ -1,5 +1,6 @@
 package com.example.fooddelivery.presentation.fragments
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,12 +13,14 @@ import com.example.fooddelivery.databinding.FragmentCartBinding
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.presentation.adapters.CartAdapter
 import com.example.fooddelivery.presentation.ui.DeliveryActivity
+import org.koin.android.ext.android.inject
 import java.text.NumberFormat
 import java.util.Currency
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private lateinit var cartAdapter: CartAdapter
+    private val cartRepository: CartRepository by inject() // Инжектим CartRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +48,8 @@ class CartFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        CartRepository.cartItemsLiveData.observe(viewLifecycleOwner) { items ->
+        // Используем инжектированный cartRepository
+        cartRepository.cartItemsLiveData.observe(viewLifecycleOwner) { items ->
             cartAdapter.submitList(items.toList())
             updateTotalPrice()
             checkIfCartEmpty()
@@ -53,13 +57,15 @@ class CartFragment : Fragment() {
     }
 
     private fun updateTotalPrice() {
-        val totalPrice = CartRepository.getTotalPrice()
+        // Используем инжектированный cartRepository
+        val totalPrice = cartRepository.getTotalPrice()
         val format = NumberFormat.getCurrencyInstance().apply {
             currency = Currency.getInstance("USD")
             maximumFractionDigits = 2
         }
 
-        binding.btContinueCart.text = if (CartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
+        // Используем инжектированный cartRepository
+        binding.btContinueCart.text = if (cartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
             getString(R.string.continue_cart)
         } else {
             getString(R.string.continue_with_price, format.format(totalPrice))
@@ -67,7 +73,8 @@ class CartFragment : Fragment() {
     }
 
     private fun checkIfCartEmpty() {
-        val isEmpty = CartRepository.cartItemsLiveData.value.isNullOrEmpty()
+        // Используем инжектированный cartRepository
+        val isEmpty = cartRepository.cartItemsLiveData.value.isNullOrEmpty()
         binding.rvCart.visibility = if (isEmpty) View.GONE else View.VISIBLE
         binding.emptyCartView.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.btContinueCart.isEnabled = !isEmpty

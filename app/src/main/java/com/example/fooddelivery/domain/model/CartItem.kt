@@ -1,6 +1,6 @@
 package com.example.fooddelivery.domain.model
 
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 
 data class CartItem(
     val foodItem: PopularModel,

@@ -17,7 +17,7 @@ import com.example.fooddelivery.data.repository.FoodRepository
 import com.example.fooddelivery.R
 import com.example.fooddelivery.presentation.adapters.ImageSliderAdapter
 import com.example.fooddelivery.presentation.adapters.PopularAdapter
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 
 
 class HomeFragment : Fragment() {

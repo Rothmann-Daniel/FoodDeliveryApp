@@ -1,17 +1,20 @@
 package com.example.fooddelivery.presentation.ui
 
+
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fooddelivery.R
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.databinding.ActivityDetailsBinding
 import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.domain.utils.toPriceString
+import org.koin.android.ext.android.inject
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsBinding
     private lateinit var foodItem: PopularModel
+    private val cartRepository: CartRepository by inject() // Инжектим CartRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +25,7 @@ class DetailsActivity : AppCompatActivity() {
         foodItem = PopularModel(
             foodImage = intent.getIntExtra("foodImage", 0),
             foodName = intent.getStringExtra("foodName") ?: "",
-            foodPrice = intent.getDoubleExtra("foodPrice", 0.0),  // Изменено на getDoubleExtra
+            foodPrice = intent.getDoubleExtra("foodPrice", 0.0),
             foodDescription = intent.getStringExtra("foodDescription") ?: "",
             foodIngredients = intent.getStringExtra("foodIngredients") ?: ""
         )
@@ -36,7 +39,7 @@ class DetailsActivity : AppCompatActivity() {
 
         // Обработка кнопки "Добавить в корзину"
         binding.btnAddToCartBM.setOnClickListener {
-            CartRepository.addToCart(foodItem)
+            cartRepository.addToCart(foodItem) // Используем инжектированный репозиторий
             Toast.makeText(
                 this,
                 getString(R.string.item_added_to_cart, foodItem.foodName),

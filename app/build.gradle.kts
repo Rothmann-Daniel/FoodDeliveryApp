@@ -68,4 +68,12 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
 
+    //Koin
+    // Koin Core
+    implementation("io.insert-koin:koin-core:3.5.0")
+
+    // Koin for Android
+    implementation("io.insert-koin:koin-android:3.5.0")
+
+
 }

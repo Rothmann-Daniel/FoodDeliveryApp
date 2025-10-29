@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddelivery.data.repository.FoodRepository
 import com.example.fooddelivery.R
 import com.example.fooddelivery.presentation.adapters.PopularAdapter
-import com.example.fooddelivery.data.models.PopularModel
+import com.example.fooddelivery.data.model.PopularModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomMenuFragment : BottomSheetDialogFragment() {

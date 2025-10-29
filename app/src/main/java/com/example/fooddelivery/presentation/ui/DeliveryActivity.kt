@@ -1,15 +1,26 @@
 package com.example.fooddelivery.presentation.ui
 
+
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.example.fooddelivery.databinding.ActivityDeliveryBinding
 import com.example.fooddelivery.domain.repository.CartRepository
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.NumberFormat
 import java.util.Currency
 
 class DeliveryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDeliveryBinding
+    private val viewModel: DeliveryViewModel by viewModel()
+    private val cartRepository: CartRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,12 +30,101 @@ class DeliveryActivity : AppCompatActivity() {
         setupObservers()
         setupBackButton()
         setupSubmitButton()
+        setupTextWatchers()
+        setupEditProfileButton()
+
+        viewModel.loadUserData()
     }
 
     private fun setupObservers() {
-        CartRepository.totalPriceLiveData.observe(this) { amount ->
+        // Наблюдаем за общей суммой из корзины
+        cartRepository.totalPriceLiveData.observe(this) { amount ->
             updateTotalAmount(amount)
         }
+
+        // Наблюдаем за данными пользователя через StateFlow
+        lifecycleScope.launch {
+            viewModel.userRepository.currentUser.collect { user ->
+                user?.let { populateUserData(it) }
+            }
+        }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.errorMessage.observe(this) { error ->
+            if (error.isNotEmpty()) {
+                showToast(error)
+            }
+        }
+    }
+
+    private fun populateUserData(user: com.example.fooddelivery.data.model.User) {
+        with(binding) {
+            edNameDelivery.setText(user.name.takeIf { it.isNotEmpty() } ?: "")
+            edAddressDelivery.setText(user.address.takeIf { it.isNotEmpty() } ?: "")
+            edPhoneDelivery.setText(user.phone.takeIf { it.isNotEmpty() } ?: "")
+
+            nameContainer.error = null
+            addressContainer.error = null
+            phoneContainer.error = null
+        }
+    }
+
+    private fun setupTextWatchers() {
+        binding.edNameDelivery.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = binding.edNameDelivery.text.toString().trim()
+                if (text.isNotEmpty()) {
+                    viewModel.updateUserField("name", text)
+                }
+            }
+        }
+
+        binding.edAddressDelivery.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = binding.edAddressDelivery.text.toString().trim()
+                if (text.isNotEmpty()) {
+                    viewModel.updateUserField("address", text)
+                }
+            }
+        }
+
+        binding.edPhoneDelivery.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = binding.edPhoneDelivery.text.toString().trim()
+                if (text.isNotEmpty()) {
+                    viewModel.updateUserField("phone", text)
+                }
+            }
+        }
+    }
+
+    private fun setupEditProfileButton() {
+        binding.btnEditProfile.setOnClickListener {
+            showEditProfileDialog()
+        }
+    }
+
+
+    private fun showEditProfileDialog() {
+        val dialog = ProfileDialogHelper.showEditProfileDialog(
+            this,
+            viewModel.userRepository,
+            this,
+            object : ProfileDialogHelper.ProfileUpdateCallback {
+                override fun onProfileUpdated() {
+                    showToast("Данные сохранены")
+                    // Обновления придут автоматически через StateFlow
+                }
+
+                override fun onError(message: String) {
+                    showToast(message)
+                }
+            }
+        )
+        dialog.show()
     }
 
     private fun setupBackButton() {
@@ -46,25 +146,34 @@ class DeliveryActivity : AppCompatActivity() {
         val address = binding.edAddressDelivery.text.toString().trim()
         val phone = binding.edPhoneDelivery.text.toString().trim()
 
-        return when {
-            name.isEmpty() -> {
-                binding.nameContainer.error = "Please enter your name"
-                false
-            }
-            address.isEmpty() -> {
-                binding.addressContainer.error = "Please enter your address"
-                false
-            }
-            phone.isEmpty() -> {
-                binding.phoneContainer.error = "Please enter your phone"
-                false
-            }
-            else -> true
+        var isValid = true
+
+        if (name.isEmpty()) {
+            binding.nameContainer.error = "Please enter your name"
+            isValid = false
+        } else {
+            binding.nameContainer.error = null
         }
+
+        if (address.isEmpty()) {
+            binding.addressContainer.error = "Please enter your address"
+            isValid = false
+        } else {
+            binding.addressContainer.error = null
+        }
+
+        if (phone.isEmpty()) {
+            binding.phoneContainer.error = "Please enter your phone"
+            isValid = false
+        } else {
+            binding.phoneContainer.error = null
+        }
+
+        return isValid
     }
 
     private fun placeOrder() {
-        val currentAmount = CartRepository.getTotalPrice()
+        val currentAmount = cartRepository.getTotalPrice()
         val paymentMethod = when {
             binding.chipCash.isChecked -> "Cash"
             binding.chipCard.isChecked -> "Card"
@@ -72,12 +181,7 @@ class DeliveryActivity : AppCompatActivity() {
             else -> "Not selected"
         }
 
-        // Здесь можно добавить логику сохранения заказа
-
-        // Очищаем корзину после успешного заказа
-        CartRepository.clearCart()
-
-        // Показываем подтверждение
+        cartRepository.clearCart()
         showOrderConfirmation(currentAmount, paymentMethod)
     }
 
@@ -96,5 +200,9 @@ class DeliveryActivity : AppCompatActivity() {
             maximumFractionDigits = 2
         }
         binding.tvTotalAmount.text = format.format(amount)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

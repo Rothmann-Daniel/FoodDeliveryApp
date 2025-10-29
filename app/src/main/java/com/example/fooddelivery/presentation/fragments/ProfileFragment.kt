@@ -11,27 +11,25 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.fooddelivery.R
+import com.example.fooddelivery.data.model.User
+import com.example.fooddelivery.data.repository.UserRepository
 import com.example.fooddelivery.databinding.DialogPasswordBinding
 import com.example.fooddelivery.databinding.FragmentProfileBinding
 import com.example.fooddelivery.domain.utils.EmailUtils
 import com.example.fooddelivery.presentation.ui.LoginUserActivity
+import com.example.fooddelivery.presentation.ui.ProfileDialogHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -39,9 +37,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -51,18 +53,46 @@ import java.util.Locale
 
 class ProfileFragment : Fragment() {
 
+    // region [1. Переменные и константы]
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
 
+    // Внедрение репозитория через Koin
+    private val userRepository: UserRepository by inject()
+
     private var currentPhotoUri: Uri? = null
 
+    // Временные данные для ожидания подтверждения
     private var pendingName: String = ""
     private var pendingEmail: String = ""
     private var pendingAddress: String = ""
     private var pendingPhone: String = ""
     private var pendingLocation: String = ""
 
+    companion object {
+        private const val TAG = "ProfileFragment"
+        private const val PREFS_NAME = "app_prefs"
+        private const val AVATAR_LOCAL_KEY = "avatar_local"
+        private const val AVATAR_URL_KEY = "avatar_url"
+        private const val LAST_AVATAR_PATH_KEY = "last_avatar_path"
+        private const val REQUEST_CODE_PERMISSIONS = 1001
+
+        // Переносим метод проверки Storage в companion object
+        fun checkStorageAvailability(callback: (Boolean) -> Unit) {
+            try {
+                val testRef = Firebase.storage.reference.child("test_connection")
+                testRef.downloadUrl
+                    .addOnSuccessListener { callback(true) }
+                    .addOnFailureListener { callback(false) }
+            } catch (e: Exception) {
+                callback(false)
+            }
+        }
+    }
+    // endregion
+
+    // region [2. Launchers для разрешений и результатов]
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -80,6 +110,7 @@ class ProfileFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             currentPhotoUri?.let { uri ->
                 loadImage(uri)
+                uploadImageWithFallback(uri)
             }
         }
     }
@@ -90,19 +121,13 @@ class ProfileFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
                 loadImage(uri)
+                uploadImageWithFallback(uri)
             }
         }
     }
+    // endregion
 
-    companion object {
-        private const val PREFS_NAME = "app_prefs"
-        private const val FIELDS_UPDATED_KEY = "fields_updated"
-        private const val TAG = "ProfileFragment"
-        private const val AVATAR_LOCAL_KEY = "avatar_local"
-        private const val AVATAR_URL_KEY = "avatar_url"
-        private const val LAST_AVATAR_PATH_KEY = "last_avatar_path"
-    }
-
+    // region [3. Методы жизненного цикла]
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -115,77 +140,69 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadUserData()
         setupClickListeners()
-        updateLegacyUserFields()
+        setupObservers() // Важно: сначала настраиваем подписки
+        loadUserData()
     }
 
-    private fun updateLegacyUserFields() {
-        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        if (!prefs.getBoolean(FIELDS_UPDATED_KEY, false)) {
-            updateAllUsersWithNewFields()
-            prefs.edit().putBoolean(FIELDS_UPDATED_KEY, true).apply()
-        }
-    }
 
-    private fun loadUserData() {
-        val currentUser = auth.currentUser ?: return
-
-        // Сначала пробуем загрузить локальный аватар
-        loadLocalAvatar()
-
-        binding.tvProfileEmail.text = currentUser.email ?: ""
-
-        Firebase.firestore.collection("users").document(currentUser.uid)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    updateUIWithUserData(document)
-                    // Пробуем загрузить аватар из Firebase, если доступно
-                    document.getString("avatarUrl")?.let { avatarUrl ->
-                        if (avatarUrl.isNotEmpty()) {
-                            checkAndLoadFirebaseAvatar(avatarUrl)
-                        }
-                    }
-                } else {
-                    setDefaultProfileValues()
+    private fun setupObservers() {
+        // Подписываемся на изменения пользователя
+        viewLifecycleOwner.lifecycleScope.launch {
+            userRepository.currentUser.collect { user ->
+                user?.let {
+                    updateUIWithUserData(it)
                 }
             }
-            .addOnFailureListener {
-                setDefaultProfileValues()
-                showErrorToast()
-            }
+        }
     }
 
-    private fun checkAndLoadFirebaseAvatar(avatarUrl: String) {
-        FirebaseStorageChecker.checkStorageAvailability { isAvailable ->
-            if (isAvailable) {
-                Glide.with(requireContext())
-                    .load(avatarUrl)
-                    .placeholder(R.drawable.ic_profile_placeholder)
-                    .error(R.drawable.ic_profile_placeholder)
-                    .into(binding.ivProfileAvatar)
-                saveAvatarLocally(avatarUrl)
-            } else {
-                // Если Storage недоступен, используем локальный аватар
-                loadLocalAvatar()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+    // endregion
+
+    // region [4. Загрузка данных пользователя]
+    private fun loadUserData() {
+        showLoading(true)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val user = userRepository.fetchCurrentUser(forceUpdate = true)
+                if (user == null) {
+                    setDefaultProfileValues()
+                }
+            } catch (e: Exception) {
+                setDefaultProfileValues()
+                showToast("Ошибка загрузки данных")
+            } finally {
+                showLoading(false)
             }
         }
     }
 
-    private fun updateUIWithUserData(document: com.google.firebase.firestore.DocumentSnapshot) {
-        with(binding) {
-            tvProfileName.text = document.getString("name") ?: getString(R.string.default_name)
+    private fun updateUIWithUserData(user: User) {
+        // Проверяем, что Fragment все еще активен
+        if (!isAdded || view == null) return
 
-            val location = document.getString("location").orEmpty().takeIf { it.isNotEmpty() }
+        with(binding) {
+            tvProfileName.text = user.name.ifEmpty { getString(R.string.default_name) }
+            tvProfileEmail.text = user.email
+
+            val location = user.location.takeIf { it.isNotEmpty() }
                 ?: getString(R.string.location_not_set)
             tvProfileLocation.apply {
                 text = location
                 visibility = if (location == getString(R.string.location_not_set)) View.GONE else View.VISIBLE
             }
 
-            tvProfileAddress.text = document.getString("address") ?: getString(R.string.address_not_set)
-            tvProfilePhone.text = document.getString("phone") ?: getString(R.string.phone_not_set)
+            tvProfileAddress.text = user.address.ifEmpty { getString(R.string.address_not_set) }
+            tvProfilePhone.text = user.phone.ifEmpty { getString(R.string.phone_not_set) }
+
+            // Загрузка аватара
+            loadAvatar(user.avatarUrl)
         }
     }
 
@@ -193,6 +210,7 @@ class ProfileFragment : Fragment() {
         val currentUser = auth.currentUser ?: return
         with(binding) {
             tvProfileName.text = currentUser.displayName ?: getString(R.string.default_name)
+            tvProfileEmail.text = currentUser.email ?: ""
             tvProfileLocation.text = getString(R.string.location_not_set)
             tvProfileAddress.text = getString(R.string.address_not_set)
             tvProfilePhone.text = getString(R.string.phone_not_set)
@@ -200,27 +218,22 @@ class ProfileFragment : Fragment() {
             tvProfileLocation.visibility = View.VISIBLE
             tvProfileAddress.visibility = View.VISIBLE
             tvProfilePhone.visibility = View.VISIBLE
+
+            loadLocalAvatar()
         }
     }
+    // endregion
 
-    private fun showErrorToast() {
-        Toast.makeText(
-            requireContext(),
-            "Ошибка загрузки данных профиля",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
+    // region [5. Настройка кликов]
     private fun setupClickListeners() {
         binding.btnEditProfile.setOnClickListener { showEditProfileDialog() }
         binding.btnLogout.setOnClickListener { logoutUser() }
         binding.tvSupportProfile.setOnClickListener { EmailUtils.sendSupportEmail(requireContext()) }
-
-        binding.ivProfileAvatar.setOnClickListener {
-            checkPermissionsAndShowDialog()
-        }
+        binding.ivProfileAvatar.setOnClickListener { checkPermissionsAndShowDialog() }
     }
+    // endregion
 
+    // region [6. Работа с аватаром]
     private fun checkPermissionsAndShowDialog() {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
@@ -321,28 +334,63 @@ class ProfileFragment : Fragment() {
 
     private fun loadImage(uri: Uri) {
         try {
-            binding.ivProfileAvatar.setImageURI(uri)
-            uploadImageWithFallback(uri)
+            Glide.with(requireContext())
+                .load(uri)
+                .placeholder(R.drawable.ic_profile_placeholder)
+                .into(binding.ivProfileAvatar)
         } catch (e: Exception) {
             showToast("Ошибка загрузки изображения")
             Log.e(TAG, "Error loading image", e)
         }
     }
 
+    private fun loadAvatar(avatarUrl: String) {
+        if (avatarUrl.isNotEmpty()) {
+            Glide.with(requireContext())
+                .load(avatarUrl)
+                .placeholder(R.drawable.ic_profile_placeholder)
+                .error(R.drawable.ic_profile_placeholder)
+                .into(binding.ivProfileAvatar)
+        } else {
+            loadLocalAvatar()
+        }
+    }
+
+    private fun loadLocalAvatar() {
+        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val lastAvatarPath = prefs.getString(LAST_AVATAR_PATH_KEY, null)
+
+        if (lastAvatarPath != null) {
+            val avatarFile = File(lastAvatarPath)
+            if (avatarFile.exists()) {
+                Glide.with(requireContext())
+                    .load(avatarFile)
+                    .placeholder(R.drawable.ic_profile_placeholder)
+                    .into(binding.ivProfileAvatar)
+                return
+            }
+        }
+
+        binding.ivProfileAvatar.setImageResource(R.drawable.ic_profile_placeholder)
+    }
+
     private fun uploadImageWithFallback(imageUri: Uri) {
-        FirebaseStorageChecker.checkStorageAvailability { isAvailable ->
+        showLoading(true)
+
+        // Используем метод из companion object
+        checkStorageAvailability { isAvailable ->
             if (isAvailable) {
                 uploadImageToFirebase(imageUri)
             } else {
                 saveImageLocally(imageUri)
                 showToast("Облачное хранилище недоступно. Аватар сохранен локально")
+                showLoading(false)
             }
         }
     }
 
     private fun uploadImageToFirebase(imageUri: Uri) {
         val user = auth.currentUser ?: return
-        showLoading(true)
 
         try {
             val storageRef = Firebase.storage.reference
@@ -356,7 +404,7 @@ class ProfileFragment : Fragment() {
                 }
                 .addOnFailureListener { e ->
                     showLoading(false)
-                    Log.w(TAG, "Ошибка загрузки в Firebase Storage, сохраняем локально", e)
+                    Log.w(TAG, "Ошибка загрузки в Firebase Storage", e)
                     saveImageLocally(imageUri)
                     showToast("Аватар сохранен локально")
                 }
@@ -379,20 +427,14 @@ class ProfileFragment : Fragment() {
                 }
             }
 
-            // Сохраняем информацию о локальном аватаре
             val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             prefs.edit()
                 .putBoolean(AVATAR_LOCAL_KEY, true)
                 .putString(LAST_AVATAR_PATH_KEY, outputFile.absolutePath)
                 .apply()
 
-            showToast("Аватар сохранен локально")
-
         } catch (e: Exception) {
             Log.e(TAG, "Ошибка сохранения локального аватара", e)
-            showToast("Ошибка сохранения аватара")
-        } finally {
-            showLoading(false)
         }
     }
 
@@ -403,146 +445,56 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateAvatarUrlInFirestore(avatarUrl: String) {
-        val user = auth.currentUser ?: return
+        showLoading(true)
 
-        Firebase.firestore.collection("users")
-            .document(user.uid)
-            .update("avatarUrl", avatarUrl)
-            .addOnSuccessListener {
-                showLoading(false)
-                showToast("Аватар обновлен")
-                saveAvatarLocally(avatarUrl)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val success = userRepository.updateUserField("avatarUrl", avatarUrl)
+                withContext(Dispatchers.Main) {
+                    showLoading(false)
+                    if (success) {
+                        showToast("Аватар обновлен")
+                        saveAvatarLocally(avatarUrl)
+                    } else {
+                        showToast("Ошибка обновления аватара")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showLoading(false)
+                    showToast("Ошибка обновления аватара")
+                }
             }
-            .addOnFailureListener { e ->
-                showLoading(false)
-                Log.e(TAG, "Avatar URL update failed", e)
-                // Все равно сохраняем локально
-                saveAvatarLocally(avatarUrl)
-            }
+        }
     }
 
     private fun saveAvatarLocally(avatarUrl: String) {
         val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit()
             .putString(AVATAR_URL_KEY, avatarUrl)
-            .putBoolean(AVATAR_LOCAL_KEY, false) // Указываем, что аватар не локальный
+            .putBoolean(AVATAR_LOCAL_KEY, false)
             .apply()
     }
+    // endregion
 
-    private fun loadLocalAvatar() {
-        val prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val hasLocalAvatar = prefs.getBoolean(AVATAR_LOCAL_KEY, false)
-
-        if (hasLocalAvatar) {
-            val lastAvatarPath = prefs.getString(LAST_AVATAR_PATH_KEY, null)
-            if (lastAvatarPath != null) {
-                val avatarFile = File(lastAvatarPath)
-                if (avatarFile.exists()) {
-                    Glide.with(requireContext())
-                        .load(avatarFile)
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .into(binding.ivProfileAvatar)
-                    return
-                }
-            }
-        }
-
-        // Если локального аватара нет, пробуем загрузить из URL
-        val avatarUrl = prefs.getString(AVATAR_URL_KEY, null)
-        if (avatarUrl != null) {
-            Glide.with(requireContext())
-                .load(avatarUrl)
-                .placeholder(R.drawable.ic_profile_placeholder)
-                .error(R.drawable.ic_profile_placeholder)
-                .into(binding.ivProfileAvatar)
-        } else {
-            // Устанавливаем placeholder
-            binding.ivProfileAvatar.setImageResource(R.drawable.ic_profile_placeholder)
-        }
-    }
-
+    // region [7. Редактирование профиля]
     private fun showEditProfileDialog() {
-        val dialogView = LayoutInflater.from(requireContext())
-            .inflate(R.layout.dialog_edit_profile, null)
-
-        val emailEditText = dialogView.findViewById<TextInputEditText>(R.id.ed_email)
-        val emailInfoText = dialogView.findViewById<TextView>(R.id.tv_email_change_info)
-        val textInputLayout = dialogView.findViewById<TextInputLayout>(R.id.location_container)
-        val locationSpinner = dialogView.findViewById<AutoCompleteTextView>(R.id.dropdownEditText)
-
-        val locations = resources.getStringArray(R.array.locations)
-        val adapter = ArrayAdapter(
+        val dialog = ProfileDialogHelper.showEditProfileDialog(
             requireContext(),
-            R.layout.dropdown_item,
-            R.id.text1,
-            locations
-        )
-        locationSpinner.setAdapter(adapter)
+            userRepository,
+            viewLifecycleOwner,
+            object : ProfileDialogHelper.ProfileUpdateCallback {
+                override fun onProfileUpdated() {
+                    showToast("Данные сохранены")
+                    // Не нужно вызывать loadUserData() - обновления придут автоматически через Flow
+                }
 
-        with(dialogView) {
-            findViewById<TextInputEditText>(R.id.ed_name).setText(binding.tvProfileName.text)
-            findViewById<TextInputEditText>(R.id.ed_email).setText(binding.tvProfileEmail.text)
-            findViewById<TextInputEditText>(R.id.ed_address).setText(binding.tvProfileAddress.text)
-            findViewById<TextInputEditText>(R.id.ed_phone).setText(binding.tvProfilePhone.text)
-
-            val currentLocation = binding.tvProfileLocation.text.toString()
-            if (currentLocation != getString(R.string.location_not_set)) {
-                locationSpinner.setText(currentLocation, false)
-            }
-        }
-
-        emailEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                val newEmail = emailEditText.text.toString().trim()
-                val currentEmail = auth.currentUser?.email ?: ""
-                emailInfoText.visibility = if (newEmail != currentEmail) View.VISIBLE else View.GONE
-            }
-        }
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.edit_profile_title))
-            .setView(dialogView)
-            .setPositiveButton(getString(R.string.save)) { _, _ ->
-                validateAndSaveProfileChanges(dialogView)
-            }
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show()
-    }
-
-    private fun validateAndSaveProfileChanges(dialogView: View) {
-        val name = dialogView.findViewById<TextInputEditText>(R.id.ed_name).text.toString().trim()
-        val email = dialogView.findViewById<TextInputEditText>(R.id.ed_email).text.toString().trim()
-        val address = dialogView.findViewById<TextInputEditText>(R.id.ed_address).text.toString().trim()
-        val phone = dialogView.findViewById<TextInputEditText>(R.id.ed_phone).text.toString().trim()
-        val location = dialogView.findViewById<AutoCompleteTextView>(R.id.dropdownEditText).text.toString().trim()
-
-        when {
-            name.isEmpty() -> showToast("Введите имя")
-            !isValidEmail(email) -> showToast("Некорректный email")
-            location.isEmpty() -> showToast("Выберите локацию")
-            else -> {
-                pendingName = name
-                pendingEmail = email
-                pendingAddress = address
-                pendingPhone = phone
-                pendingLocation = location
-
-                if (emailChanged(email)) {
-                    showPasswordDialog()
-                } else {
-                    updateProfileData(name, email, address, phone, location)
+                override fun onError(message: String) {
+                    showToast(message)
                 }
             }
-        }
-    }
-
-    private fun emailChanged(newEmail: String): Boolean {
-        val currentEmail = auth.currentUser?.email ?: return false
-        return newEmail != currentEmail
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        )
+        dialog.show()
     }
 
     private fun showPasswordDialog() {
@@ -634,7 +586,7 @@ class ProfileFragment : Fragment() {
                             }
                         }
 
-                    updateProfileData(pendingName, pendingEmail, pendingAddress, pendingPhone, pendingLocation)
+                    updateProfileData()
                 } else {
                     handleEmailUpdateError(task.exception)
                 }
@@ -661,84 +613,55 @@ class ProfileFragment : Fragment() {
         clearPendingData()
     }
 
-    private fun updateProfileData(name: String, email: String, address: String, phone: String, location: String) {
-        val user = auth.currentUser ?: return
+    private fun updateProfileData() {
+        showLoading(true)
 
-        val updates = hashMapOf<String, Any>(
-            "name" to name,
-            "email" to email,
-            "address" to address,
-            "phone" to phone,
-            "location" to location
-        )
+        // Запускаем в фоновом потоке для сетевых операций
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val updates = mapOf(
+                "name" to pendingName,
+                "email" to pendingEmail,
+                "address" to pendingAddress,
+                "phone" to pendingPhone,
+                "location" to pendingLocation
+            )
 
-        Firebase.firestore.collection("users")
-            .document(user.uid)
-            .update(updates)
-            .addOnSuccessListener {
-                Log.d(TAG, "Profile data updated successfully")
-                updateUI(name, email, address, phone, location)
-                showToast("Данные сохранены")
-                clearPendingData()
+            var successCount = 0
+            val totalUpdates = updates.size
+
+            updates.forEach { (field, value) ->
+                val success = userRepository.updateUserField(field, value)
+                if (success) successCount++
             }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Firestore update error", e)
-                showToast("Ошибка сохранения: ${e.message}")
+
+            // Возвращаемся в главный поток для обновления UI
+            withContext(Dispatchers.Main) {
+                showLoading(false)
+                if (successCount == totalUpdates) {
+                    loadUserData() // Перезагружаем данные для обновления UI
+                    showToast("Данные сохранены")
+                } else {
+                    showToast("Часть данных сохранена")
+                }
                 clearPendingData()
-            }
-    }
-
-    private fun updateUI(name: String, email: String, address: String, phone: String, location: String) {
-        with(binding) {
-            tvProfileName.text = name
-            tvProfileEmail.text = email
-            tvProfileAddress.text = address
-            tvProfilePhone.text = phone
-            tvProfileLocation.text = location
-
-            tvProfileLocation.visibility = if (location != getString(R.string.location_not_set)) {
-                View.VISIBLE
-            } else {
-                View.GONE
             }
         }
     }
+    // endregion
 
+    // region [8. Выход и вспомогательные методы]
     private fun logoutUser() {
         auth.signOut()
+        userRepository.clearUserData()
         startActivity(Intent(requireContext(), LoginUserActivity::class.java))
         requireActivity().finish()
-    }
-
-    private fun updateAllUsersWithNewFields() {
-        Firebase.firestore.collection("users").get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val updates = mutableMapOf<String, Any>()
-
-                    if (!document.contains("address")) {
-                        updates["address"] = getString(R.string.address_not_set)
-                    }
-
-                    if (!document.contains("phone")) {
-                        updates["phone"] = getString(R.string.phone_not_set)
-                    }
-
-                    if (!document.contains("location")) {
-                        updates["location"] = getString(R.string.location_not_set)
-                    }
-
-                    if (updates.isNotEmpty()) {
-                        document.reference.update(updates)
-                    }
-                }
-            }
     }
 
     private fun showLoading(show: Boolean) {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
         binding.btnEditProfile.isEnabled = !show
         binding.btnLogout.isEnabled = !show
+        binding.ivProfileAvatar.isEnabled = !show
     }
 
     private fun showToast(message: String) {
@@ -753,37 +676,5 @@ class ProfileFragment : Fragment() {
         pendingLocation = ""
         showLoading(false)
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    // Вложенный объект для проверки доступности Storage
-    object FirebaseStorageChecker {
-        private var isStorageAvailable: Boolean? = null
-
-        fun checkStorageAvailability(callback: (Boolean) -> Unit) {
-            if (isStorageAvailable != null) {
-                callback(isStorageAvailable!!)
-                return
-            }
-
-            try {
-                val testRef = Firebase.storage.reference.child("test_connection")
-                testRef.downloadUrl
-                    .addOnSuccessListener {
-                        isStorageAvailable = true
-                        callback(true)
-                    }
-                    .addOnFailureListener {
-                        isStorageAvailable = false
-                        callback(false)
-                    }
-            } catch (e: Exception) {
-                isStorageAvailable = false
-                callback(false)
-            }
-        }
-    }
+    // endregion
 }
