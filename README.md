@@ -1,0 +1,72 @@
+Описание
+
+Мобильное приложение для заказа и доставки еды с возможностью выбора из разнообразного меню и интеграции с различными ресторанами.
+
+Статус проекта: 🔄 В активной разработке
+
+Текущие задачи:
+
+Миграция на архитектуру MVVM
+
+Внедрение DI Koin
+
+Реализация истории заказов
+
+Система отслеживания статусов доставки
+
+🚀 Основные функции
+
+🔐 Безопасность
+Авторизация через Firebase - быстрый вход через Google/Facebook аккаунты
+
+🍕 Работа с заказами
+Умный поиск - поиск блюд в обширном меню
+
+Универсальная корзина - добавление товаров с любых экранов приложения
+
+Система оплаты - multiple payment methods support
+
+👤 Профиль пользователя
+Редактирование профиля - изменение персональных данных с синхронизацией в Firebase
+
+🛠 Технологии
+Архитектура & Development
+Kotlin - modern Android development
+
+MVVM - Model-View-ViewModel (в процессе внедрения)
+
+Koin - Dependency Injection (в разработке)
+
+Backend & Data
+Firebase - authentication and realtime database
+
+Cloud Firestore - user data management
+
+Планируемые технологии
+Retrofit - для интеграции с API ресторанов
+
+Room - локальное кэширование данных
+
+Coroutines & Flow - асинхронные операции
+
+Скриншоты
+
+<div align="center" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center;">
+
+<img src="https://github.com/user-attachments/assets/aaf6cec3-26b6-4862-b372-dd6c8de70eb0" width="280">
+
+<img src="https://github.com/user-attachments/assets/b6c34ca8-8c8f-486c-88ac-db5827508938" width="280">
+
+<img src="https://github.com/user-attachments/assets/6bc84b5c-0a59-4faa-b450-af7369042369" width="280">
+
+<img src="https://github.com/user-attachments/assets/bd6f14ee-addd-4d3f-a0f9-e8855665b636" width="280">
+
+<img src="https://github.com/user-attachments/assets/b85108e8-6686-4748-b228-a5cd61642d0b" width="280">
+
+<img src="https://github.com/user-attachments/assets/678aabfe-8048-4c2e-b2b4-c355819a7d20" width="280">
+
+<img src="https://github.com/user-attachments/assets/1509ce93-3820-4bc5-83f0-39b91e7ee6a9" width="280">
+
+<img src="https://github.com/user-attachments/assets/02425691-3f88-4be8-bc90-92620eea61bd" width="280">
+
+<img src="https://github.com/user-attachments/assets/df26cb27-3a68-4f73-9cc4-ed8c5d02cd27" width="280"></div>
