@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.registration
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivitySingUpUserBinding
 import com.example.fooddelivery.domain.utils.EmailUtils
+import com.example.fooddelivery.presentation.activity.init.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

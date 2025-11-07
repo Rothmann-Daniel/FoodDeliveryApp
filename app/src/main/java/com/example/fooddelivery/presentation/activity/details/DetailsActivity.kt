@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.details
 
 
 import android.os.Bundle

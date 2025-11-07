@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.init
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivityMainBinding
+import com.example.fooddelivery.presentation.activity.registration.LoginUserActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

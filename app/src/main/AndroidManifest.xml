@@ -32,29 +32,29 @@
         android:theme="@style/Theme.FoodDelivery"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ui.ThankYouActivity"
+            android:name=".presentation.activity.delivery.ThankYouActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.DeliveryActivity"
+            android:name=".presentation.activity.delivery.DeliveryActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.DetailsActivity"
+            android:name=".presentation.activity.details.DetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.LocationActivity"
+            android:name=".presentation.activity.registration.LocationActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.SingUpUserActivity"
+            android:name=".presentation.activity.registration.SingUpUserActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.LoginUserActivity"
+            android:name=".presentation.activity.registration.LoginUserActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.StartActivity"
+            android:name=".presentation.activity.init.StartActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.SplashActivity"
+            android:name=".presentation.activity.init.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ui.MainActivity"
+            android:name=".presentation.activity.init.MainActivity"
             android:exported="true" />
 
         <provider

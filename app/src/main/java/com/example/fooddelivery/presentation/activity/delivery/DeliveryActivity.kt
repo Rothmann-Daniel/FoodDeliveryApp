@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.delivery
 
 
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.fooddelivery.databinding.ActivityDeliveryBinding
 import com.example.fooddelivery.domain.repository.CartRepository
+import com.example.fooddelivery.presentation.fragments.profile.ProfileDialogHelper
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

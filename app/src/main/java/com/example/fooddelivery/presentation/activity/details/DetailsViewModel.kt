@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.details
 
 import androidx.lifecycle.ViewModel
 import com.example.fooddelivery.data.model.PopularModel

@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.fragments
+package com.example.fooddelivery.presentation.fragments.search
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fooddelivery.databinding.FragmentSearchBinding
 import com.example.fooddelivery.presentation.adapters.PopularAdapter
-import com.example.fooddelivery.presentation.ui.SearchViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

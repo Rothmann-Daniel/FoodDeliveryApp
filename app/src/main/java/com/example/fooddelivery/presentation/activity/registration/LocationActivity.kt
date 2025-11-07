@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.registration
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivityLocationBinding
+import com.example.fooddelivery.presentation.activity.init.MainActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

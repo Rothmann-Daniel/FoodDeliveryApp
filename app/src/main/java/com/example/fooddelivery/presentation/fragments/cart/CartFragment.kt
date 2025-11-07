@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.fragments
+package com.example.fooddelivery.presentation.fragments.cart
 
 
 import android.content.Intent
@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.FragmentCartBinding
 import com.example.fooddelivery.presentation.adapters.CartAdapter
-import com.example.fooddelivery.presentation.ui.CartViewModel
-import com.example.fooddelivery.presentation.ui.DeliveryActivity
+import com.example.fooddelivery.presentation.activity.delivery.DeliveryActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.NumberFormat

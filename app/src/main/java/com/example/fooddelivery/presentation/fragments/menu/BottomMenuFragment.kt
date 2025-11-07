@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.fragments
+package com.example.fooddelivery.presentation.fragments.menu
 
 import android.os.Bundle
 import android.view.KeyEvent

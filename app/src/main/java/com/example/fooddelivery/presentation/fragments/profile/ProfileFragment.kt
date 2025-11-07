@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.fragments
+package com.example.fooddelivery.presentation.fragments.profile
 
 import android.Manifest
 import android.app.Activity
@@ -27,8 +27,7 @@ import com.example.fooddelivery.data.repository.UserRepository
 import com.example.fooddelivery.databinding.DialogPasswordBinding
 import com.example.fooddelivery.databinding.FragmentProfileBinding
 import com.example.fooddelivery.domain.utils.EmailUtils
-import com.example.fooddelivery.presentation.ui.LoginUserActivity
-import com.example.fooddelivery.presentation.ui.ProfileDialogHelper
+import com.example.fooddelivery.presentation.activity.registration.LoginUserActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -43,7 +42,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.fragments
+package com.example.fooddelivery.presentation.fragments.home
 
 import android.os.Bundle
 import android.os.Handler
@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.FragmentHomeBinding
 import com.example.fooddelivery.presentation.adapters.ImageSliderAdapter
 import com.example.fooddelivery.presentation.adapters.PopularAdapter
-import com.example.fooddelivery.presentation.ui.HomeViewModel
+import com.example.fooddelivery.presentation.fragments.menu.BottomMenuFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddelivery.databinding.CartAddItemBinding
 import com.example.fooddelivery.domain.model.CartItem
 import com.example.fooddelivery.domain.utils.toPriceString
-import com.example.fooddelivery.presentation.ui.CartViewModel
+import com.example.fooddelivery.presentation.fragments.cart.CartViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 class CartAdapter(

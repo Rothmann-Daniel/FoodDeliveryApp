@@ -1,4 +1,4 @@
-package com.example.fooddelivery.presentation.ui
+package com.example.fooddelivery.presentation.activity.init
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.fooddelivery.databinding.ActivityStartBinding
+import com.example.fooddelivery.presentation.activity.registration.LoginUserActivity
 
 class StartActivity : AppCompatActivity() {
 
