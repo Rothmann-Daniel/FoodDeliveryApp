@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.StartActivity">
+    tools:context=".presentation.activity.init.StartActivity">
 
     <ImageView
         android:id="@+id/iv_ic_dishes"

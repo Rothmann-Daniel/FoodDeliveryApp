@@ -16,3 +16,4 @@ class FoodDeliveryApp : Application() {
         }
     }
 }
+

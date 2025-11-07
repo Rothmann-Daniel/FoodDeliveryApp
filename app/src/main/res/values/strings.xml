@@ -146,11 +146,24 @@
     <string name="make_foto">Photo</string>
     <string name="choose_from_gallery">Gallery</string>
 
-
+    <!-- Order -->
+    <string name="order_confirmed">Order Confirmed</string>
+    <string name="pending_time">14:30</string>
+    <string name="order_number">Order #12345</string>
+    <string name="delivery_status">Pending</string>
+    <string name="order_data_time">12 Nov 2024, 14:30</string>
+    <string name="quantity_cart_item">3 items</string>
+    <string name="track_order">Track Order</string>
+    <string name="order_history">Order History</string>
+    <string name="active_orders">Active Orders</string>
+    <string name="history_orders">History</string>
+    <string name="cancel_order">Cancel Order</string>
 
     <!-- Other -->
     <string name="next">Next</string>
     <string name="add_info">Add Information</string>
+
+
 
 
 </resources>

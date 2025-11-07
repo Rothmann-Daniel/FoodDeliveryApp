@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fooddelivery.R
-import com.example.fooddelivery.presentation.ui.DetailsActivity
+import com.example.fooddelivery.presentation.activity.details.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
 import com.example.fooddelivery.data.model.PopularModel
 import com.example.fooddelivery.domain.utils.toPriceString
-import com.example.fooddelivery.presentation.ui.CartViewModel
+import com.example.fooddelivery.presentation.fragments.cart.CartViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 class PopularAdapter(

@@ -4,7 +4,7 @@
     android:id="@+id/splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.SplashActivity">
+    tools:context=".presentation.activity.init.SplashActivity">
 
     <!-- Ограничитель по высоте -->
     <androidx.constraintlayout.widget.Guideline

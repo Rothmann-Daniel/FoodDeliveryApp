@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.ui.DeliveryActivity">
+    tools:context=".presentation.activity.delivery.DeliveryActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                 android:fontFamily="@font/yeonsung"
                 android:inputType="text"
                 android:maxLines="1"
-                android:text="@string/add_info"
+                android:text=""
                 android:textColor="@color/blue" />
         </com.google.android.material.textfield.TextInputLayout>
 
