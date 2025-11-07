@@ -10,9 +10,10 @@
     <!-- Header -->
     <TextView
         android:id="@+id/tv_history_title"
+        style="@style/tv_title_StartActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order History"
+        android:text="@string/order_history"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -34,17 +35,18 @@
         app:tabIndicatorColor="@color/blue"
         app:tabSelectedTextColor="@color/blue"
         app:tabTextColor="@color/grey"
+        app:tabTextAppearance="@style/tv_description_SplashActivity"
         app:layout_constraintTop_toBottomOf="@id/tv_history_title">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Active Orders" />
+            android:text="@string/active_orders" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="History" />
+            android:text="@string/history_orders" />
     </com.google.android.material.tabs.TabLayout>
 
     <!-- ViewPager для переключения между вкладками -->
