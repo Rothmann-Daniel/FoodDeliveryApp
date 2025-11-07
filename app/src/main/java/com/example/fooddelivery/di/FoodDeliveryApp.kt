@@ -17,4 +17,3 @@ class FoodDeliveryApp : Application() {
     }
 }
 
-//init dev
