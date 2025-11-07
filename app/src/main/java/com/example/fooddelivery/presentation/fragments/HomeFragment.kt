@@ -7,68 +7,78 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.example.fooddelivery.data.repository.BannerRepository
-import com.example.fooddelivery.data.repository.FoodRepository
 import com.example.fooddelivery.R
+import com.example.fooddelivery.databinding.FragmentHomeBinding
 import com.example.fooddelivery.presentation.adapters.ImageSliderAdapter
 import com.example.fooddelivery.presentation.adapters.PopularAdapter
-import com.example.fooddelivery.data.model.PopularModel
-
+import com.example.fooddelivery.presentation.ui.HomeViewModel
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
-    private lateinit var viewPager2: ViewPager2
-    private lateinit var adapter: ImageSliderAdapter
-    private lateinit var imagesList: ArrayList<Int>
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: HomeViewModel by viewModel()
+
+    private lateinit var imageSliderAdapter: ImageSliderAdapter
+    private lateinit var popularAdapter: PopularAdapter
     private lateinit var handler: Handler
 
-    private lateinit var popularAdapter: PopularAdapter
-    private lateinit var popularList: ArrayList<PopularModel>
-    private lateinit var popularRecyclerView: RecyclerView
-    private lateinit var goMenu: Button
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        viewPager2 = view.findViewById(R.id.imageSlider)
-        popularRecyclerView = view.findViewById(R.id.rv_home_FH)
-        goMenu = view.findViewById(R.id.btn_go_menu)
-
-        //Popular List
-        popularList = FoodRepository.popularMenu as ArrayList<PopularModel>
-
-        popularAdapter = PopularAdapter(requireContext(), popularList)
-        popularRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        popularRecyclerView.adapter = popularAdapter
-
-        //Go Menu
-        goMenu.setOnClickListener {
-           val bottomSheetMenu = BottomMenuFragment()
-            bottomSheetMenu.show(parentFragmentManager, "bottomSheetMenu")
-        }
-
-        return view
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
-        setTransformer()
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+
+        handler = Handler(Looper.myLooper()!!)
+
+        setupObservers()
+        setupImageSlider()
+        setupGoMenuButton()
+    }
+
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.bannerList.collect { banners ->
+                if (banners.isNotEmpty()) {
+                    initImageSlider(ArrayList(banners))
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.popularMenu.collect { menu ->
+                if (menu.isNotEmpty()) {
+                    setupPopularMenu(menu)
+                }
+            }
+        }
+    }
+
+    private fun setupPopularMenu(menu: List<com.example.fooddelivery.data.model.PopularModel>) {
+        popularAdapter = PopularAdapter(requireContext(), menu)
+        binding.rvHomeFH.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            adapter = popularAdapter
+        }
+    }
+
+    private fun setupImageSlider() {
+        binding.imageSlider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 handler.removeCallbacks(runnable)
@@ -77,9 +87,42 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun initImageSlider(images: ArrayList<Int>) {
+        val initialPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2 % images.size)
+
+        imageSliderAdapter = ImageSliderAdapter(requireContext(), images, binding.imageSlider)
+        binding.imageSlider.apply {
+            adapter = imageSliderAdapter
+            setCurrentItem(initialPosition, false)
+            offscreenPageLimit = 3
+            clipToPadding = false
+            clipChildren = false
+            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
+
+        setTransformer()
+    }
+
+    private fun setTransformer() {
+        val transformer = CompositePageTransformer()
+        transformer.addTransformer(MarginPageTransformer(10))
+        transformer.addTransformer { page, position ->
+            val r = 1 - Math.abs(position)
+            page.scaleY = 0.85f + r * 0.15f
+        }
+        binding.imageSlider.setPageTransformer(transformer)
+    }
+
+    private fun setupGoMenuButton() {
+        binding.btnGoMenu.setOnClickListener {
+            val bottomSheetMenu = BottomMenuFragment()
+            bottomSheetMenu.show(parentFragmentManager, "bottomSheetMenu")
+        }
+    }
+
     private val runnable = Runnable {
-        val current = viewPager2.currentItem
-        viewPager2.setCurrentItem(current + 1, true)
+        val current = binding.imageSlider.currentItem
+        binding.imageSlider.setCurrentItem(current + 1, true)
     }
 
     override fun onPause() {
@@ -90,35 +133,11 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         handler.postDelayed(runnable, 3000)
-
-    }
-    // Image Slider
-    private fun init() {
-        imagesList = BannerRepository.bannerList as ArrayList<Int>
-
-        // Устанавливаем начальную позицию в середину "бесконечного" списка
-        val initialPosition = Int.MAX_VALUE / 2 - (Int.MAX_VALUE / 2 % imagesList.size)
-
-        adapter = ImageSliderAdapter(requireContext(), imagesList, viewPager2)
-        viewPager2.adapter = adapter
-        viewPager2.setCurrentItem(initialPosition, false)
-        handler = Handler(Looper.myLooper()!!)
-        viewPager2.offscreenPageLimit = 3
-        viewPager2.clipToPadding = false
-        viewPager2.clipChildren = false
-        viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-
-
     }
 
-    private fun setTransformer() {
-        val transformer = CompositePageTransformer()
-        transformer.addTransformer(MarginPageTransformer(10))
-        transformer.addTransformer { page, position ->
-            val r = 1 - Math.abs(position)
-            page.scaleY = 0.85f + r*0.15f
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(runnable)
+        _binding = null
     }
-        viewPager2.setPageTransformer(transformer)
-    }
-
 }

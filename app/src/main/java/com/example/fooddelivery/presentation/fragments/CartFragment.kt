@@ -7,27 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.FragmentCartBinding
-import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.presentation.adapters.CartAdapter
+import com.example.fooddelivery.presentation.ui.CartViewModel
 import com.example.fooddelivery.presentation.ui.DeliveryActivity
-import org.koin.android.ext.android.inject
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.NumberFormat
 import java.util.Currency
 
 class CartFragment : Fragment() {
-    private lateinit var binding: FragmentCartBinding
+    private var _binding: FragmentCartBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var cartAdapter: CartAdapter
-    private val cartRepository: CartRepository by inject() // Инжектим CartRepository
+    private val viewModel: CartViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCartBinding.inflate(inflater, container, false)
+        _binding = FragmentCartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,24 +52,27 @@ class CartFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        // Используем инжектированный cartRepository
-        cartRepository.cartItemsLiveData.observe(viewLifecycleOwner) { items ->
-            cartAdapter.submitList(items.toList())
-            updateTotalPrice()
-            checkIfCartEmpty()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.cartItems.collect { items ->
+                cartAdapter.submitList(items)
+                checkIfCartEmpty()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.totalPrice.collect { price ->
+                updateTotalPrice(price)
+            }
         }
     }
 
-    private fun updateTotalPrice() {
-        // Используем инжектированный cartRepository
-        val totalPrice = cartRepository.getTotalPrice()
+    private fun updateTotalPrice(totalPrice: Double) {
         val format = NumberFormat.getCurrencyInstance().apply {
             currency = Currency.getInstance("USD")
             maximumFractionDigits = 2
         }
 
-        // Используем инжектированный cartRepository
-        binding.btContinueCart.text = if (cartRepository.cartItemsLiveData.value.isNullOrEmpty()) {
+        binding.btContinueCart.text = if (viewModel.isCartEmpty()) {
             getString(R.string.continue_cart)
         } else {
             getString(R.string.continue_with_price, format.format(totalPrice))
@@ -73,8 +80,7 @@ class CartFragment : Fragment() {
     }
 
     private fun checkIfCartEmpty() {
-        // Используем инжектированный cartRepository
-        val isEmpty = cartRepository.cartItemsLiveData.value.isNullOrEmpty()
+        val isEmpty = viewModel.isCartEmpty()
         binding.rvCart.visibility = if (isEmpty) View.GONE else View.VISIBLE
         binding.emptyCartView.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.btContinueCart.isEnabled = !isEmpty
@@ -84,5 +90,10 @@ class CartFragment : Fragment() {
         binding.btContinueCart.setOnClickListener {
             startActivity(Intent(requireContext(), DeliveryActivity::class.java))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

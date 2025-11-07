@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.example.fooddelivery.databinding.ActivityDeliveryBinding
 import com.example.fooddelivery.domain.repository.CartRepository
@@ -37,25 +35,33 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Наблюдаем за общей суммой из корзины
-        cartRepository.totalPriceLiveData.observe(this) { amount ->
-            updateTotalAmount(amount)
+        // Наблюдаем за общей суммой через StateFlow
+        lifecycleScope.launch {
+            cartRepository.totalPrice.collect { amount ->
+                updateTotalAmount(amount)
+            }
         }
 
-        // Наблюдаем за данными пользователя через StateFlow
+        // Наблюдаем за данными пользователя
         lifecycleScope.launch {
             viewModel.userRepository.currentUser.collect { user ->
                 user?.let { populateUserData(it) }
             }
         }
 
-        viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        // Наблюдаем за состоянием загрузки
+        lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
         }
 
-        viewModel.errorMessage.observe(this) { error ->
-            if (error.isNotEmpty()) {
-                showToast(error)
+        // Наблюдаем за ошибками
+        lifecycleScope.launch {
+            viewModel.errorMessage.collect { error ->
+                if (error.isNotEmpty()) {
+                    showToast(error)
+                }
             }
         }
     }
@@ -107,7 +113,6 @@ class DeliveryActivity : AppCompatActivity() {
         }
     }
 
-
     private fun showEditProfileDialog() {
         val dialog = ProfileDialogHelper.showEditProfileDialog(
             this,
@@ -116,7 +121,6 @@ class DeliveryActivity : AppCompatActivity() {
             object : ProfileDialogHelper.ProfileUpdateCallback {
                 override fun onProfileUpdated() {
                     showToast("Данные сохранены")
-                    // Обновления придут автоматически через StateFlow
                 }
 
                 override fun onError(message: String) {

@@ -10,8 +10,8 @@ import com.example.fooddelivery.R
 import com.example.fooddelivery.presentation.ui.DetailsActivity
 import com.example.fooddelivery.databinding.HomeFoodItemBinding
 import com.example.fooddelivery.data.model.PopularModel
-import com.example.fooddelivery.domain.repository.CartRepository
 import com.example.fooddelivery.domain.utils.toPriceString
+import com.example.fooddelivery.presentation.ui.CartViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 class PopularAdapter(
@@ -19,8 +19,7 @@ class PopularAdapter(
     private val list: List<PopularModel>
 ) : RecyclerView.Adapter<PopularAdapter.PopularViewHolder>() {
 
-    // Инжектим CartRepository через Koin
-    private val cartRepository: CartRepository by inject(CartRepository::class.java)
+    private val cartViewModel: CartViewModel by inject(CartViewModel::class.java)
 
     inner class PopularViewHolder(private val binding: HomeFoodItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -32,7 +31,7 @@ class PopularAdapter(
                 tvFoodItemPrice.text = item.foodPrice.toPriceString()
 
                 tvBtnFoodItem.setOnClickListener {
-                    cartRepository.addToCart(item) // Используем инжектированный репозиторий
+                    cartViewModel.addToCart(item)
                     Toast.makeText(
                         context,
                         context.getString(R.string.item_added_to_cart, item.foodName),

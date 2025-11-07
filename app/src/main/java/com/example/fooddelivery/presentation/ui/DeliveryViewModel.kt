@@ -1,35 +1,30 @@
 package com.example.fooddelivery.presentation.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fooddelivery.data.model.User
 import com.example.fooddelivery.data.repository.UserRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
 
 class DeliveryViewModel(val userRepository: UserRepository) : ViewModel() {
 
-    private val _userData = MutableLiveData<User?>()
-    val userData: LiveData<User?> = _userData
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
+    private val _errorMessage = MutableStateFlow("")
+    val errorMessage: StateFlow<String> = _errorMessage.asStateFlow()
 
     fun loadUserData() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val user = userRepository.fetchCurrentUser()
-                _userData.postValue(user)
+                userRepository.fetchCurrentUser()
             } catch (e: Exception) {
-                _errorMessage.postValue("Ошибка загрузки данных пользователя")
+                _errorMessage.value = "Ошибка загрузки данных пользователя"
             } finally {
-                _isLoading.postValue(false)
+                _isLoading.value = false
             }
         }
     }
@@ -38,14 +33,11 @@ class DeliveryViewModel(val userRepository: UserRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 val success = userRepository.updateUserField(field, value)
-                if (success) {
-                    // Перезагружаем данные для обновления UI
-                    loadUserData()
-                } else {
-                    _errorMessage.postValue("Ошибка обновления данных")
+                if (!success) {
+                    _errorMessage.value = "Ошибка обновления данных"
                 }
             } catch (e: Exception) {
-                _errorMessage.postValue("Ошибка обновления: ${e.message}")
+                _errorMessage.value = "Ошибка обновления: ${e.message}"
             }
         }
     }
