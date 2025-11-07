@@ -2,21 +2,27 @@ package com.example.fooddelivery.presentation.activity.init
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.fooddelivery.R
 import com.example.fooddelivery.databinding.ActivityMainBinding
 import com.example.fooddelivery.presentation.activity.registration.LoginUserActivity
+import com.example.fooddelivery.service.FCMTokenManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,6 +64,26 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         bottomNavigationView.setupWithNavController(navController)
+        // Получаем FCM токен
+        lifecycleScope.launch {
+            val token = FCMTokenManager.getToken(this@MainActivity)
+            Log.d("FCM", "Token: $token")
+
+            // Сохраняем токен в Firestore для текущего пользователя
+            token?.let { saveUserFcmToken(it) }
+        }
     }
 
+    private suspend fun saveUserFcmToken(token: String) {
+        val user = Firebase.auth.currentUser ?: return
+        try {
+            Firebase.firestore.collection("users")
+                .document(user.uid)
+                .update("fcmToken", token)
+                .await()
+        } catch (e: Exception) {
+            Log.e("FCM", "Error saving token", e)
+        }
+    }
 }
+

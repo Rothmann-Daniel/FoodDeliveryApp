@@ -186,6 +186,15 @@ class DeliveryActivity : AppCompatActivity() {
             else -> "Not selected"
         }
 
+        // Создаем заказ в базе данных
+        viewModel.createOrder(
+            items = cartRepository.cartItems.value,
+            totalAmount = currentAmount,
+            paymentMethod = paymentMethod,
+            deliveryAddress = binding.edAddressDelivery.text.toString(),
+            phone = binding.edPhoneDelivery.text.toString()
+        )
+
         cartRepository.clearCart()
         showOrderConfirmation(currentAmount, paymentMethod)
     }
