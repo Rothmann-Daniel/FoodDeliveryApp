@@ -10,7 +10,7 @@
 
 ## 📥 Скачать приложение
 
-[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases/download/v1.0/app-debug.apk)
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases/download/v1.0/app-release.apk)
 
 **Или перейдите на:** [Страницу Releases](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases) для просмотра всех версий
 
