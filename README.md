@@ -103,52 +103,50 @@ cd FoodDelivery
 
 <details>
 <summary>Посмотреть скриншоты</summary>
-
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/aaf6cec3-26b6-4862-b372-dd6c8de70eb0" width="250" alt="Главный экран"/>
-      <br/><sub><b>Главный экран</b></sub>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/b6c34ca8-8c8f-486c-88ac-db5827508938" width="250" alt="Меню ресторана"/>
-      <br/><sub><b>Меню ресторана</b></sub>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/6bc84b5c-0a59-4faa-b450-af7369042369" width="250" alt="Детали блюда"/>
-      <br/><sub><b>Детали блюда</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/bd6f14ee-addd-4d3f-a0f9-e8855665b636" width="250" alt="Корзина"/>
-      <br/><sub><b>Корзина</b></sub>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/b85108e8-6686-4748-b228-a5cd61642d0b" width="250" alt="Оформление заказа"/>
-      <br/><sub><b>Оформление заказа</b></sub>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/678aabfe-8048-4c2e-b2b4-c355819a7d20" width="250" alt="Профиль"/>
-      <br/><sub><b>Профиль пользователя</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/1509ce93-3820-4bc5-83f0-39b91e7ee6a9" width="250" alt="История заказов"/>
+      <img src="https://github.com/user-attachments/assets/a8367493-fb63-45a2-8087-4d9465c683f1" width="250" alt="История"/>
       <br/><sub><b>История заказов</b></sub>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/02425691-3f88-4be8-bc90-92620eea61bd" width="250" alt="Поиск"/>
-      <br/><sub><b>Поиск блюд</b></sub>
+      <img src="https://github.com/user-attachments/assets/6fef1d6b-efb9-4501-96b3-74f29f47b355" width="250" alt="Профиль"/>
+      <br/><sub><b>Профиль</b></sub>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/df26cb27-3a68-4f73-9cc4-ed8c5d02cd27" width="250" alt="Авторизация"/>
-      <br/><sub><b>Авторизация</b></sub>
+      <img src="https://github.com/user-attachments/assets/9d08452f-0386-4680-9f7d-de5d58568ef9" width="250" alt="Поиск"/>
+      <br/><sub><b>Поиск блюда</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/3f9d6126-c867-4447-9d11-8f845e1ead7c" width="250" alt="Корзина"/>
+      <br/><sub><b>Корзина</b></sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/e172138e-2ef9-4da6-b2c3-5f98ad360eae" width="250" alt="Состав"/>
+      <br/><sub><b>Состав блюда/Детали</b></sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/e7c6671c-19ce-49de-89cd-1ef9fad2638c" width="250" alt="Авторизация"/>
+      <br/><sub><b>Авторизация пользователя</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/bbe2dc1e-36d4-46bf-be93-f295f2b76db3" width="250" alt="Меню"/>
+      <br/><sub><b>Меню</b></sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/62b1a18e-68df-4aa6-b5bd-efd82fa6b1b9" width="250" alt="Главный экран"/>
+      <br/><sub><b>Главный экран</b></sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/dfd388c7-2892-4fbd-a9a0-d9a3bfee4c60" width="250" alt="Локализация"/>
+      <br/><sub><b>Локализация</b></sub>
     </td>
   </tr>
 </table>
-
 </details>
 
 ## 🏗 Архитектура проекта
