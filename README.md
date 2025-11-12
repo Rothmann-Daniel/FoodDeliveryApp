@@ -8,13 +8,11 @@
 [![Firebase](https://img.shields.io/badge/Firebase-Integrated-orange?logo=firebase)](https://firebase.google.com)
 [![Status](https://img.shields.io/badge/Status-In%20Development-yellow)](https://github.com/Rothmann-Daniel/FoodDelivery)
 
-
 ## 📥 Скачать приложение
 
-[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases/tag/v1.0)
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases/download/v1.0/app-debug.apk)
 
-**Или перейдите на:** [Страницу Releases](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases)
-
+**Или перейдите на:** [Страницу Releases](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases) для просмотра всех версий
 
 
 ---
