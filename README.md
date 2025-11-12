@@ -1,11 +1,21 @@
 # Food Delivery App - Приложение доставки еды 🍕
 
 Мобильное приложение для заказа и доставки еды с возможностью выбора из разнообразного меню и интеграции с различными ресторанами.
+---
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue?logo=kotlin)](https://kotlinlang.org)
 [![Android](https://img.shields.io/badge/Android-7.0%2B-green?logo=android)](https://www.android.com)
 [![Firebase](https://img.shields.io/badge/Firebase-Integrated-orange?logo=firebase)](https://firebase.google.com)
 [![Status](https://img.shields.io/badge/Status-In%20Development-yellow)](https://github.com/Rothmann-Daniel/FoodDelivery)
+
+
+## 📥 Скачать приложение
+
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases/tag/v1.0)
+
+**Или перейдите на:** [Страницу Releases](https://github.com/Rothmann-Daniel/FoodDeliveryApp/releases)
+
+
 
 ---
 
