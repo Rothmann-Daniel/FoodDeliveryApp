@@ -219,7 +219,7 @@ app/
 
 ## 👨‍💻 Автор
 
-**Даниил Ротман** - Android Developer
+**Данила Ротман** - Android Developer
 
 - 📱 Telegram: [@danielrothmann](https://t.me/danielrothmann)
 - 🌐 GitHub: [@Rothmann-Daniel](https://github.com/Rothmann-Daniel)
